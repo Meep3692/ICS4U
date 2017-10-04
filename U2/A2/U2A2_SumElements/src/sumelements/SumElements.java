@@ -28,17 +28,20 @@ public class SumElements extends javax.swing.JFrame {
     private void showList(){
         String output = "";//String to store output in
         output = numbers.stream().map((number) -> number + "\n").reduce(output, String::concat);//Add numbers to output
-        outputTextArea.setText(output);//Show on screen
+        outputListTextArea.setText(output);//Show on screen
     }
     
     private void sumSome(boolean even){
         int sum = 0;
+        String output = "";
         for(int number : numbers){//Iterate numbers
             if((number % 2 == 0) == even){//Test if evenness is what we want
                 sum += number;//Add to sum
+                output += number + "\n";
             }//Not using functional operator because that is long and weird
         }
-        outputTextArea.setText(Integer.toString(sum));
+        outputListTextArea.setText(output);
+        outputField.setText("Sum: " + sum);
     }
 
     /**
@@ -61,7 +64,8 @@ public class SumElements extends javax.swing.JFrame {
         sumEvenButton = new javax.swing.JButton();
         inputLabel = new javax.swing.JLabel();
         outputScrollPane = new javax.swing.JScrollPane();
-        outputTextArea = new javax.swing.JTextArea();
+        outputListTextArea = new javax.swing.JTextArea();
+        outputField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sum Elements");
@@ -155,11 +159,15 @@ public class SumElements extends javax.swing.JFrame {
 
         getContentPane().add(controlsPanel, java.awt.BorderLayout.PAGE_START);
 
-        outputTextArea.setColumns(20);
-        outputTextArea.setRows(5);
-        outputScrollPane.setViewportView(outputTextArea);
+        outputListTextArea.setEditable(false);
+        outputListTextArea.setColumns(20);
+        outputListTextArea.setRows(5);
+        outputScrollPane.setViewportView(outputListTextArea);
 
         getContentPane().add(outputScrollPane, java.awt.BorderLayout.CENTER);
+
+        outputField.setEditable(false);
+        getContentPane().add(outputField, java.awt.BorderLayout.PAGE_END);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -171,7 +179,7 @@ public class SumElements extends javax.swing.JFrame {
             numbers.add(number);//Add to list
             showList();//Show on screen
         }catch(NumberFormatException e){//Something's gone wrong
-            outputTextArea.setText("Invalid number input: " + inputField.getText());
+            outputField.setText("Invalid number input: " + inputField.getText());
         }
     }//GEN-LAST:event_addButtonActionPerformed
 
@@ -182,7 +190,7 @@ public class SumElements extends javax.swing.JFrame {
             numbers.remove((Integer)number);//Cast to integer to not be mistaken for an index
             showList();//Show list
         }catch(NumberFormatException e){//User doesn't know how to write numbers
-            outputTextArea.setText("Invalid number input: " + inputField.getText());
+            outputField.setText("Invalid number input: " + inputField.getText());
         }
     }//GEN-LAST:event_removeButtonActionPerformed
 
@@ -193,7 +201,8 @@ public class SumElements extends javax.swing.JFrame {
     private void sumAllButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sumAllButtonActionPerformed
         int sum = 0;//var to store sum
         sum = numbers.stream().map((number) -> number).reduce(sum, Integer::sum);//Add all to var
-        outputTextArea.setText(Integer.toString(sum));//Set output
+        showList();
+        outputField.setText("Sum: " + sum);//Set output
     }//GEN-LAST:event_sumAllButtonActionPerformed
 
     private void sumOddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sumOddButtonActionPerformed
@@ -245,8 +254,9 @@ public class SumElements extends javax.swing.JFrame {
     private javax.swing.JTextField inputField;
     private javax.swing.JLabel inputLabel;
     private javax.swing.JButton listButton;
+    private javax.swing.JTextField outputField;
+    private javax.swing.JTextArea outputListTextArea;
     private javax.swing.JScrollPane outputScrollPane;
-    private javax.swing.JTextArea outputTextArea;
     private javax.swing.JButton removeButton;
     private javax.swing.JButton sumAllButton;
     private javax.swing.JButton sumEvenButton;
