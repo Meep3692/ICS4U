@@ -12,10 +12,13 @@ import java.util.*;
  * @author jonswaine
  */
 public class matchingGameSwaineUI extends javax.swing.JFrame {
-
+    
+    //Stores value of cards
     ArrayList<String> cards = new ArrayList();
+    //Stores card set (two of ever type of card)
     ArrayList<String> set = new ArrayList();
     
+    //Setting images for cards
     ImageIcon a = new ImageIcon(getClass().getResource("/matchinggameswaine/ram.jpg")); // NOI18N
     ImageIcon b = new ImageIcon(getClass().getResource("/matchinggameswaine/case.jpg"));
     ImageIcon c = new ImageIcon(getClass().getResource("/matchinggameswaine/dvd.jpg"));
@@ -26,9 +29,12 @@ public class matchingGameSwaineUI extends javax.swing.JFrame {
     ImageIcon h = new ImageIcon(getClass().getResource("/matchinggameswaine/printer.jpg"));
     ImageIcon back = new ImageIcon(getClass().getResource("/matchinggameswaine/cardback.jpg"));
     ImageIcon done = new ImageIcon(getClass().getResource("/matchinggameswaine/done.jpg"));
-    
+    //Count: How many cards are flipped
+    //c1, c2 first and second card flipped
+    //card1 and card2 are unused
     int count, c1, c2, card1, card2;
     int cardsLeft = 16;
+    //Stores card states (0=flipped, 1=normal, 2=done)
     int[] change = new int[16];
     
     /**
@@ -310,16 +316,18 @@ public class matchingGameSwaineUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
-        System.exit(0);
+        System.exit(0);//Trust the OS to release resources when the process exits
     }//GEN-LAST:event_btnExitActionPerformed
 
+    //Hit play button
     private void btnPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlayActionPerformed
-        
+        //Reset all cards to default state
         for (int z=0; z <= 15; z++)
         {
             change[z] = 1;
         }
         
+        //Add every card type to arraylist twice
         String temp;
         for (int x=0; x <= 7; x++)
         {
@@ -330,23 +338,24 @@ public class matchingGameSwaineUI extends javax.swing.JFrame {
             }
         }
         
+        //Randomly assign card types from set to cards
         for (int x = 0; x <= 15; x++)
         {
-            double index = Math.floor(Math.random() *(16-x));
-            int index1 = (int) index;
-            cards.add(set.get(index1));
-            set.remove(set.get(index1));
+            double index = Math.floor(Math.random() *(16-x));//Randomly choose index in card set
+            int index1 = (int) index;//cast to int
+            cards.add(set.get(index1));//set card
+            set.remove(set.get(index1));//remove from avaliable cards
         }
         
     }//GEN-LAST:event_btnPlayActionPerformed
 
     private void btnCard1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCard1ActionPerformed
         
-        String temp = cards.get(0);
+        String temp = cards.get(0);//Get value of card
         
-        if (temp.equals("0"))
+        if (temp.equals("0"))//Check what card we are and change to that
         {
-            btnCard1.setIcon(a); // NOI18N
+            btnCard1.setIcon(a);
         }
         else if (temp.equals("1"))
         {
@@ -568,7 +577,7 @@ public class matchingGameSwaineUI extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_btnGuessAgainActionPerformed
-
+    //These are all the same
     private void btnCard2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCard2ActionPerformed
         
         String temp = cards.get(1);
