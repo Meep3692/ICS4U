@@ -7,6 +7,7 @@ package matchinggameswaine;
 
 import javax.swing.ImageIcon;
 import java.util.*;
+import javax.swing.JButton;
 /**
  *
  * @author jonswaine
@@ -17,6 +18,8 @@ public class matchingGameSwaineUI extends javax.swing.JFrame {
     ArrayList<String> cards = new ArrayList();
     //Stores card set (two of ever type of card)
     ArrayList<String> set = new ArrayList();
+    //Store buttons
+    ArrayList<JButton> buttons = new ArrayList();
     
     //Setting images for cards
     ImageIcon a = new ImageIcon(getClass().getResource("/matchinggameswaine/ram.jpg")); // NOI18N
@@ -52,8 +55,10 @@ public class matchingGameSwaineUI extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
-        jLabel1 = new javax.swing.JLabel();
+        titleLabel = new javax.swing.JLabel();
+        buttonsPanel = new javax.swing.JPanel();
         btnCard1 = new javax.swing.JButton();
         btnCard2 = new javax.swing.JButton();
         btnCard3 = new javax.swing.JButton();
@@ -70,15 +75,20 @@ public class matchingGameSwaineUI extends javax.swing.JFrame {
         btnCard13 = new javax.swing.JButton();
         btnCard16 = new javax.swing.JButton();
         btnCard15 = new javax.swing.JButton();
+        controlsPanel = new javax.swing.JPanel();
         btnPlay = new javax.swing.JButton();
+        cardCountField = new javax.swing.JTextField();
         btnGuessAgain = new javax.swing.JButton();
         btnExit = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setFont(new java.awt.Font("Big Caslon", 0, 36)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 51, 51));
-        jLabel1.setText("Matching Game");
+        titleLabel.setFont(new java.awt.Font("Big Caslon", 0, 36)); // NOI18N
+        titleLabel.setForeground(new java.awt.Color(255, 51, 51));
+        titleLabel.setText("Matching Game");
+        getContentPane().add(titleLabel, java.awt.BorderLayout.NORTH);
+
+        buttonsPanel.setLayout(new java.awt.GridLayout(4, 4));
 
         btnCard1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/matchinggameswaine/cardback.jpg"))); // NOI18N
         btnCard1.addActionListener(new java.awt.event.ActionListener() {
@@ -86,6 +96,7 @@ public class matchingGameSwaineUI extends javax.swing.JFrame {
                 btnCard1ActionPerformed(evt);
             }
         });
+        buttonsPanel.add(btnCard1);
 
         btnCard2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/matchinggameswaine/cardback.jpg"))); // NOI18N
         btnCard2.addActionListener(new java.awt.event.ActionListener() {
@@ -93,6 +104,7 @@ public class matchingGameSwaineUI extends javax.swing.JFrame {
                 btnCard2ActionPerformed(evt);
             }
         });
+        buttonsPanel.add(btnCard2);
 
         btnCard3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/matchinggameswaine/cardback.jpg"))); // NOI18N
         btnCard3.addActionListener(new java.awt.event.ActionListener() {
@@ -100,6 +112,7 @@ public class matchingGameSwaineUI extends javax.swing.JFrame {
                 btnCard3ActionPerformed(evt);
             }
         });
+        buttonsPanel.add(btnCard3);
 
         btnCard4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/matchinggameswaine/cardback.jpg"))); // NOI18N
         btnCard4.addActionListener(new java.awt.event.ActionListener() {
@@ -107,6 +120,7 @@ public class matchingGameSwaineUI extends javax.swing.JFrame {
                 btnCard4ActionPerformed(evt);
             }
         });
+        buttonsPanel.add(btnCard4);
 
         btnCard6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/matchinggameswaine/cardback.jpg"))); // NOI18N
         btnCard6.addActionListener(new java.awt.event.ActionListener() {
@@ -114,6 +128,7 @@ public class matchingGameSwaineUI extends javax.swing.JFrame {
                 btnCard6ActionPerformed(evt);
             }
         });
+        buttonsPanel.add(btnCard6);
 
         btnCard5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/matchinggameswaine/cardback.jpg"))); // NOI18N
         btnCard5.addActionListener(new java.awt.event.ActionListener() {
@@ -121,6 +136,7 @@ public class matchingGameSwaineUI extends javax.swing.JFrame {
                 btnCard5ActionPerformed(evt);
             }
         });
+        buttonsPanel.add(btnCard5);
 
         btnCard8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/matchinggameswaine/cardback.jpg"))); // NOI18N
         btnCard8.addActionListener(new java.awt.event.ActionListener() {
@@ -128,6 +144,7 @@ public class matchingGameSwaineUI extends javax.swing.JFrame {
                 btnCard8ActionPerformed(evt);
             }
         });
+        buttonsPanel.add(btnCard8);
 
         btnCard7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/matchinggameswaine/cardback.jpg"))); // NOI18N
         btnCard7.addActionListener(new java.awt.event.ActionListener() {
@@ -135,6 +152,7 @@ public class matchingGameSwaineUI extends javax.swing.JFrame {
                 btnCard7ActionPerformed(evt);
             }
         });
+        buttonsPanel.add(btnCard7);
 
         btnCard10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/matchinggameswaine/cardback.jpg"))); // NOI18N
         btnCard10.addActionListener(new java.awt.event.ActionListener() {
@@ -142,6 +160,7 @@ public class matchingGameSwaineUI extends javax.swing.JFrame {
                 btnCard10ActionPerformed(evt);
             }
         });
+        buttonsPanel.add(btnCard10);
 
         btnCard9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/matchinggameswaine/cardback.jpg"))); // NOI18N
         btnCard9.addActionListener(new java.awt.event.ActionListener() {
@@ -149,6 +168,7 @@ public class matchingGameSwaineUI extends javax.swing.JFrame {
                 btnCard9ActionPerformed(evt);
             }
         });
+        buttonsPanel.add(btnCard9);
 
         btnCard12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/matchinggameswaine/cardback.jpg"))); // NOI18N
         btnCard12.addActionListener(new java.awt.event.ActionListener() {
@@ -156,6 +176,7 @@ public class matchingGameSwaineUI extends javax.swing.JFrame {
                 btnCard12ActionPerformed(evt);
             }
         });
+        buttonsPanel.add(btnCard12);
 
         btnCard11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/matchinggameswaine/cardback.jpg"))); // NOI18N
         btnCard11.addActionListener(new java.awt.event.ActionListener() {
@@ -163,6 +184,7 @@ public class matchingGameSwaineUI extends javax.swing.JFrame {
                 btnCard11ActionPerformed(evt);
             }
         });
+        buttonsPanel.add(btnCard11);
 
         btnCard14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/matchinggameswaine/cardback.jpg"))); // NOI18N
         btnCard14.addActionListener(new java.awt.event.ActionListener() {
@@ -170,6 +192,7 @@ public class matchingGameSwaineUI extends javax.swing.JFrame {
                 btnCard14ActionPerformed(evt);
             }
         });
+        buttonsPanel.add(btnCard14);
 
         btnCard13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/matchinggameswaine/cardback.jpg"))); // NOI18N
         btnCard13.addActionListener(new java.awt.event.ActionListener() {
@@ -177,6 +200,7 @@ public class matchingGameSwaineUI extends javax.swing.JFrame {
                 btnCard13ActionPerformed(evt);
             }
         });
+        buttonsPanel.add(btnCard13);
 
         btnCard16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/matchinggameswaine/cardback.jpg"))); // NOI18N
         btnCard16.addActionListener(new java.awt.event.ActionListener() {
@@ -184,6 +208,7 @@ public class matchingGameSwaineUI extends javax.swing.JFrame {
                 btnCard16ActionPerformed(evt);
             }
         });
+        buttonsPanel.add(btnCard16);
 
         btnCard15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/matchinggameswaine/cardback.jpg"))); // NOI18N
         btnCard15.addActionListener(new java.awt.event.ActionListener() {
@@ -191,6 +216,11 @@ public class matchingGameSwaineUI extends javax.swing.JFrame {
                 btnCard15ActionPerformed(evt);
             }
         });
+        buttonsPanel.add(btnCard15);
+
+        getContentPane().add(buttonsPanel, java.awt.BorderLayout.CENTER);
+
+        controlsPanel.setLayout(new java.awt.GridBagLayout());
 
         btnPlay.setText("Play");
         btnPlay.addActionListener(new java.awt.event.ActionListener() {
@@ -198,6 +228,15 @@ public class matchingGameSwaineUI extends javax.swing.JFrame {
                 btnPlayActionPerformed(evt);
             }
         });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        controlsPanel.add(btnPlay, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        controlsPanel.add(cardCountField, gridBagConstraints);
 
         btnGuessAgain.setText("Guess Again");
         btnGuessAgain.setActionCommand("");
@@ -207,6 +246,11 @@ public class matchingGameSwaineUI extends javax.swing.JFrame {
                 btnGuessAgainActionPerformed(evt);
             }
         });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridheight = 2;
+        controlsPanel.add(btnGuessAgain, gridBagConstraints);
 
         btnExit.setText("Exit");
         btnExit.setActionCommand("");
@@ -216,101 +260,12 @@ public class matchingGameSwaineUI extends javax.swing.JFrame {
                 btnExitActionPerformed(evt);
             }
         });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridheight = 2;
+        controlsPanel.add(btnExit, gridBagConstraints);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(151, 151, 151)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGap(69, 69, 69)
-                                .addComponent(btnPlay)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnGuessAgain))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGap(51, 51, 51)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(btnCard2)
-                                    .addComponent(btnCard1)
-                                    .addComponent(btnCard4)
-                                    .addComponent(btnCard3))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(btnCard6)
-                                    .addComponent(btnCard5)
-                                    .addComponent(btnCard8)
-                                    .addComponent(btnCard7))))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(btnCard10)
-                                    .addComponent(btnCard9)
-                                    .addComponent(btnCard12)
-                                    .addComponent(btnCard11))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(btnCard14)
-                                    .addComponent(btnCard13)
-                                    .addComponent(btnCard16)
-                                    .addComponent(btnCard15)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(btnExit)
-                                .addGap(11, 11, 11)))))
-                .addContainerGap(58, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnCard1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnCard2, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnCard3, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnCard4, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnCard13, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnCard14, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnCard15, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnCard16, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnCard5, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnCard6, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnCard7, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnCard8, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnCard9, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnCard10, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnCard11, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnCard12, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnPlay)
-                    .addComponent(btnGuessAgain)
-                    .addComponent(btnExit))
-                .addContainerGap(45, Short.MAX_VALUE))
-        );
+        getContentPane().add(controlsPanel, java.awt.BorderLayout.SOUTH);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -1370,6 +1325,9 @@ public class matchingGameSwaineUI extends javax.swing.JFrame {
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnGuessAgain;
     private javax.swing.JButton btnPlay;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel buttonsPanel;
+    private javax.swing.JTextField cardCountField;
+    private javax.swing.JPanel controlsPanel;
+    private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
 }
