@@ -33,6 +33,7 @@ public class matchingGameSwaineUI extends javax.swing.JFrame implements ActionLi
     //c1, c2 first and second card flipped
     //cardCount is the number of cards
     int count, c1, c2, cardCount;
+    //How many cards are left
     int cardsLeft;
     //Stores card states (0=flipped, 1=normal, 2=done)
     int[] change;
@@ -154,6 +155,7 @@ public class matchingGameSwaineUI extends javax.swing.JFrame implements ActionLi
         }catch(NumberFormatException e){
             cardCount = 16;
         }
+        cardsLeft = cardCount;
         
         GridLayout layout = (GridLayout)buttonsPanel.getLayout();//Get layout
         int[] dimensions = makeSquarish(cardCount);//Make roughly square
@@ -199,17 +201,18 @@ public class matchingGameSwaineUI extends javax.swing.JFrame implements ActionLi
         count = 0;//Reset count
         if (c1 == c2)//Check cards are the same
         {
-            for(int i = 0; i < cardCount; i++){
-                if(change[i] == 0){//Card if flipped
+            for(int i = 0; i < cardCount; i++){//Set cards to finished
+                if(change[i] == 0){//Card is flipped
                     buttons.get(i).setIcon(done);
                     change[i] = 2;
                 }
             }
+            cardsLeft -= 2;//Subtract from cards left
         } 
         else 
         {
-            for(int i = 0; i < cardCount; i++){
-                if(change[i] == 0){//Card if flipped
+            for(int i = 0; i < cardCount; i++){//Reset cards
+                if(change[i] == 0){//Card is flipped
                     buttons.get(i).setIcon(back);
                     change[i] = 1;
                 }
@@ -269,14 +272,17 @@ public class matchingGameSwaineUI extends javax.swing.JFrame implements ActionLi
         JButton button = (JButton)e.getSource();
         if(button.getName().startsWith("guessButton")){
             int buttonID = Integer.parseInt(button.getName().substring(11));//Parse id from name
-            int cardType = cards.get(buttonID);//Get type of current card
-            button.setIcon(icons.get(cardType));//Set icon to our card
-            change[buttonID] = 0;//Set state of card to flipped
-            count++;//Add to cards flipped counter
-            if(count == 1){//Set c1 or c2 depending on which card we are
-                c1 = cardType;
-            }else if(count == 2){
-                c2 = cardType;
+            if(change[buttonID] == 1){//Are we flipped on our back
+                int cardType = cards.get(buttonID);//Get type of current card
+                button.setIcon(icons.get(cardType));//Set icon to our card
+                change[buttonID] = 0;//Set state of card to flipped
+                count++;//Add to cards flipped counter
+                
+                if(count == 1){//Set c1 or c2 depending on which card we are
+                    c1 = cardType;
+                }else if(count == 2){
+                    c2 = cardType;
+                }
             }
         }
     }
