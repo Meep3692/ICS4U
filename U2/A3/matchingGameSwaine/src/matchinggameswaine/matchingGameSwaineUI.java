@@ -5,6 +5,9 @@
  */
 package matchinggameswaine;
 
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import java.util.*;
 import javax.swing.JButton;
@@ -12,39 +15,52 @@ import javax.swing.JButton;
  *
  * @author jonswaine
  */
-public class matchingGameSwaineUI extends javax.swing.JFrame {
+public class matchingGameSwaineUI extends javax.swing.JFrame implements ActionListener {
     
     //Stores value of cards
-    ArrayList<String> cards = new ArrayList();
+    ArrayList<Integer> cards = new ArrayList();
     //Stores card set (two of ever type of card)
-    ArrayList<String> set = new ArrayList();
+    ArrayList<Integer> set = new ArrayList();
     //Store buttons
     ArrayList<JButton> buttons = new ArrayList();
+    //Store card images
+    ArrayList<ImageIcon> icons = new ArrayList();
     
-    //Setting images for cards
-    ImageIcon a = new ImageIcon(getClass().getResource("/matchinggameswaine/ram.jpg")); // NOI18N
-    ImageIcon b = new ImageIcon(getClass().getResource("/matchinggameswaine/case.jpg"));
-    ImageIcon c = new ImageIcon(getClass().getResource("/matchinggameswaine/dvd.jpg"));
-    ImageIcon d = new ImageIcon(getClass().getResource("/matchinggameswaine/harddrive.jpg"));
-    ImageIcon e = new ImageIcon(getClass().getResource("/matchinggameswaine/keyboard.jpg"));
-    ImageIcon f = new ImageIcon(getClass().getResource("/matchinggameswaine/mice.jpg"));
-    ImageIcon g = new ImageIcon(getClass().getResource("/matchinggameswaine/monitor.jpg"));
-    ImageIcon h = new ImageIcon(getClass().getResource("/matchinggameswaine/printer.jpg"));
+    //Icons for back of card and pair
     ImageIcon back = new ImageIcon(getClass().getResource("/matchinggameswaine/cardback.jpg"));
     ImageIcon done = new ImageIcon(getClass().getResource("/matchinggameswaine/done.jpg"));
     //Count: How many cards are flipped
     //c1, c2 first and second card flipped
-    //card1 and card2 are unused
-    int count, c1, c2, card1, card2;
-    int cardsLeft = 16;
+    //cardCount is the number of cards
+    int count, c1, c2, cardCount;
+    int cardsLeft;
     //Stores card states (0=flipped, 1=normal, 2=done)
-    int[] change = new int[16];
+    int[] change;
     
     /**
      * Creates new form matchingGameSwaineUI
      */
     public matchingGameSwaineUI() {
         initComponents();
+        //Add icons
+        icons.add(new ImageIcon(getClass().getResource("/matchinggameswaine/ram.jpg")));
+        icons.add(new ImageIcon(getClass().getResource("/matchinggameswaine/case.jpg")));
+        icons.add(new ImageIcon(getClass().getResource("/matchinggameswaine/dvd.jpg")));
+        icons.add(new ImageIcon(getClass().getResource("/matchinggameswaine/harddrive.jpg")));
+        icons.add(new ImageIcon(getClass().getResource("/matchinggameswaine/keyboard.jpg")));
+        icons.add(new ImageIcon(getClass().getResource("/matchinggameswaine/mice.jpg")));
+        icons.add(new ImageIcon(getClass().getResource("/matchinggameswaine/monitor.jpg")));
+        icons.add(new ImageIcon(getClass().getResource("/matchinggameswaine/printer.jpg")));
+    }
+    
+    private int[] makeSquarish(int count){
+        int start = (int)Math.sqrt(count);//Find roughly the square root
+        for(int i = start; i > 0; i--){
+            if(count % i == 0){//If this is divisible, it will make a rectangle
+                return new int[]{i, count / i};//Return values in array
+            }
+        }
+        return new int[]{1, count};//This is technicaly unreachable but this makes java happy
     }
 
     /**
@@ -59,22 +75,6 @@ public class matchingGameSwaineUI extends javax.swing.JFrame {
 
         titleLabel = new javax.swing.JLabel();
         buttonsPanel = new javax.swing.JPanel();
-        btnCard1 = new javax.swing.JButton();
-        btnCard2 = new javax.swing.JButton();
-        btnCard3 = new javax.swing.JButton();
-        btnCard4 = new javax.swing.JButton();
-        btnCard6 = new javax.swing.JButton();
-        btnCard5 = new javax.swing.JButton();
-        btnCard8 = new javax.swing.JButton();
-        btnCard7 = new javax.swing.JButton();
-        btnCard10 = new javax.swing.JButton();
-        btnCard9 = new javax.swing.JButton();
-        btnCard12 = new javax.swing.JButton();
-        btnCard11 = new javax.swing.JButton();
-        btnCard14 = new javax.swing.JButton();
-        btnCard13 = new javax.swing.JButton();
-        btnCard16 = new javax.swing.JButton();
-        btnCard15 = new javax.swing.JButton();
         controlsPanel = new javax.swing.JPanel();
         btnPlay = new javax.swing.JButton();
         cardCountField = new javax.swing.JTextField();
@@ -89,135 +89,6 @@ public class matchingGameSwaineUI extends javax.swing.JFrame {
         getContentPane().add(titleLabel, java.awt.BorderLayout.NORTH);
 
         buttonsPanel.setLayout(new java.awt.GridLayout(4, 4));
-
-        btnCard1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/matchinggameswaine/cardback.jpg"))); // NOI18N
-        btnCard1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCard1ActionPerformed(evt);
-            }
-        });
-        buttonsPanel.add(btnCard1);
-
-        btnCard2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/matchinggameswaine/cardback.jpg"))); // NOI18N
-        btnCard2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCard2ActionPerformed(evt);
-            }
-        });
-        buttonsPanel.add(btnCard2);
-
-        btnCard3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/matchinggameswaine/cardback.jpg"))); // NOI18N
-        btnCard3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCard3ActionPerformed(evt);
-            }
-        });
-        buttonsPanel.add(btnCard3);
-
-        btnCard4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/matchinggameswaine/cardback.jpg"))); // NOI18N
-        btnCard4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCard4ActionPerformed(evt);
-            }
-        });
-        buttonsPanel.add(btnCard4);
-
-        btnCard6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/matchinggameswaine/cardback.jpg"))); // NOI18N
-        btnCard6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCard6ActionPerformed(evt);
-            }
-        });
-        buttonsPanel.add(btnCard6);
-
-        btnCard5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/matchinggameswaine/cardback.jpg"))); // NOI18N
-        btnCard5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCard5ActionPerformed(evt);
-            }
-        });
-        buttonsPanel.add(btnCard5);
-
-        btnCard8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/matchinggameswaine/cardback.jpg"))); // NOI18N
-        btnCard8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCard8ActionPerformed(evt);
-            }
-        });
-        buttonsPanel.add(btnCard8);
-
-        btnCard7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/matchinggameswaine/cardback.jpg"))); // NOI18N
-        btnCard7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCard7ActionPerformed(evt);
-            }
-        });
-        buttonsPanel.add(btnCard7);
-
-        btnCard10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/matchinggameswaine/cardback.jpg"))); // NOI18N
-        btnCard10.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCard10ActionPerformed(evt);
-            }
-        });
-        buttonsPanel.add(btnCard10);
-
-        btnCard9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/matchinggameswaine/cardback.jpg"))); // NOI18N
-        btnCard9.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCard9ActionPerformed(evt);
-            }
-        });
-        buttonsPanel.add(btnCard9);
-
-        btnCard12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/matchinggameswaine/cardback.jpg"))); // NOI18N
-        btnCard12.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCard12ActionPerformed(evt);
-            }
-        });
-        buttonsPanel.add(btnCard12);
-
-        btnCard11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/matchinggameswaine/cardback.jpg"))); // NOI18N
-        btnCard11.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCard11ActionPerformed(evt);
-            }
-        });
-        buttonsPanel.add(btnCard11);
-
-        btnCard14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/matchinggameswaine/cardback.jpg"))); // NOI18N
-        btnCard14.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCard14ActionPerformed(evt);
-            }
-        });
-        buttonsPanel.add(btnCard14);
-
-        btnCard13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/matchinggameswaine/cardback.jpg"))); // NOI18N
-        btnCard13.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCard13ActionPerformed(evt);
-            }
-        });
-        buttonsPanel.add(btnCard13);
-
-        btnCard16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/matchinggameswaine/cardback.jpg"))); // NOI18N
-        btnCard16.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCard16ActionPerformed(evt);
-            }
-        });
-        buttonsPanel.add(btnCard16);
-
-        btnCard15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/matchinggameswaine/cardback.jpg"))); // NOI18N
-        btnCard15.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCard15ActionPerformed(evt);
-            }
-        });
-        buttonsPanel.add(btnCard15);
-
         getContentPane().add(buttonsPanel, java.awt.BorderLayout.CENTER);
 
         controlsPanel.setLayout(new java.awt.GridBagLayout());
@@ -276,999 +147,76 @@ public class matchingGameSwaineUI extends javax.swing.JFrame {
 
     //Hit play button
     private void btnPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlayActionPerformed
+        buttonsPanel.removeAll();//Reset buttons
+        buttons.clear();
+        try{//Parse card count or default to 16
+            cardCount = Integer.parseInt(cardCountField.getText());
+        }catch(NumberFormatException e){
+            cardCount = 16;
+        }
+        
+        GridLayout layout = (GridLayout)buttonsPanel.getLayout();//Get layout
+        int[] dimensions = makeSquarish(cardCount);//Make roughly square
+        layout.setRows(dimensions[0]);
+        layout.setColumns(dimensions[1]);
+        
+        change = new int[cardCount];//Reset state array size
         //Reset all cards to default state
-        for (int z=0; z <= 15; z++)
+        for (int z=0; z < cardCount; z++)
         {
             change[z] = 1;
         }
         
-        //Add every card type to arraylist twice
-        String temp;
-        for (int x=0; x <= 7; x++)
-        {
-            for (int y = 1; y <= 2; y++)
+        //Add every card type to arraylist twice for as many cards as we need
+        while(set.size() < cardCount)
+            for (int x=0; x <= 7; x++)
             {
-                temp = Integer.toString(x);
-                set.add(temp);
+                set.add(x);
+                set.add(x);
             }
-        }
         
         //Randomly assign card types from set to cards
-        for (int x = 0; x <= 15; x++)
+        for (int x = 0; x < cardCount; x++)
         {
-            double index = Math.floor(Math.random() *(16-x));//Randomly choose index in card set
+            double index = Math.floor(Math.random() *(cardCount-x));//Randomly choose index in card set
             int index1 = (int) index;//cast to int
             cards.add(set.get(index1));//set card
             set.remove(set.get(index1));//remove from avaliable cards
+            change[x] = 1;//reset card state
+            
+            JButton button = new JButton();//New card button
+            button.setIcon(back);//Set icon to default
+            button.setName("guessButton" + x);//Set name for later identification
+            button.addActionListener(this);//Set action listener to this class
+            buttonsPanel.add(button, x);//Add to panel
+            buttons.add(button);//Add to list
         }
-        
+        buttonsPanel.repaint();//Repaint panel so buttons show
     }//GEN-LAST:event_btnPlayActionPerformed
-
-    private void btnCard1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCard1ActionPerformed
-        
-        String temp = cards.get(0);//Get value of card
-        
-        if (temp.equals("0"))//Check what card we are and change to that
-        {
-            btnCard1.setIcon(a);
-        }
-        else if (temp.equals("1"))
-        {
-            btnCard1.setIcon(b);
-        }
-        else if (temp.equals("2"))
-        {
-            btnCard1.setIcon(c);
-        }
-        else if (temp.equals("3"))
-        {
-            btnCard1.setIcon(d);
-        }
-        else if (temp.equals("4"))
-        {
-            btnCard1.setIcon(e);
-        }
-        else if (temp.equals("5"))
-        {
-            btnCard1.setIcon(f);
-        }
-        else if (temp.equals("6"))
-        {
-            btnCard1.setIcon(g);
-        }
-        else if (temp.equals("7"))
-        {
-            btnCard1.setIcon(h);
-        }
-        
-        count++;
-        if (count == 1)
-        {
-            c1 = Integer.parseInt(temp);
-            change[0] = 0;
-        }
-        else if (count==2)
-        {
-            c2 = Integer.parseInt(temp);
-            change[0] = 0;
-        }
-        
-    }//GEN-LAST:event_btnCard1ActionPerformed
 
     private void btnGuessAgainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuessAgainActionPerformed
         
-        count = 0;
-        if (c1 == c2)
+        count = 0;//Reset count
+        if (c1 == c2)//Check cards are the same
         {
-            for (int y = 1; y <= 2; y++)
-            {
-                if (change[0] == 0)
-                {
-                    btnCard1.setIcon(done);
-                    change[0] = 2;
-                } 
-                else if (change[1] == 0) 
-                {
-                    btnCard2.setIcon(done);
-                    change[1] = 2;
-                } 
-                else if (change[2] == 0) 
-                {
-                    btnCard3.setIcon(done);
-                    change[2] = 2;
-                }
-                else if (change[3] == 0) 
-                {
-                    btnCard4.setIcon(done);
-                    change[3] = 2;
-                }
-                else if (change[4] == 0) 
-                {
-                    btnCard5.setIcon(done);
-                    change[4] = 2;
-                }
-                else if (change[5] == 0) 
-                {
-                    btnCard6.setIcon(done);
-                    change[5] = 2;
-                }
-                else if (change[6] == 0) 
-                {
-                    btnCard7.setIcon(done);
-                    change[6] = 2;
-                }
-                else if (change[7] == 0) 
-                {
-                    btnCard8.setIcon(done);
-                    change[7] = 2;
-                }
-                else if (change[8] == 0) 
-                {
-                    btnCard9.setIcon(done);
-                    change[8] = 2;
-                }
-                else if (change[9] == 0) 
-                {
-                    btnCard10.setIcon(done);
-                    change[9] = 2;
-                }
-                else if (change[10] == 0) 
-                {
-                    btnCard11.setIcon(done);
-                    change[10] = 2;
-                }
-                else if (change[11] == 0) 
-                {
-                    btnCard12.setIcon(done);
-                    change[11] = 2;
-                }
-                else if (change[12] == 0) 
-                {
-                    btnCard13.setIcon(done);
-                    change[12] = 2;
-                }
-                else if (change[13] == 0) 
-                {
-                    btnCard14.setIcon(done);
-                    change[13] = 2;
-                }
-                else if (change[14] == 0) 
-                {
-                    btnCard15.setIcon(done);
-                    change[14] = 2;
-                }
-                else if (change[15] == 0) 
-                {
-                    btnCard16.setIcon(done);
-                    change[15] = 2;
+            for(int i = 0; i < cardCount; i++){
+                if(change[i] == 0){//Card if flipped
+                    buttons.get(i).setIcon(done);
+                    change[i] = 2;
                 }
             }
         } 
         else 
         {
-            for (int y = 1; y<=2; y++) 
-            {
-                if (change[0] == 0) 
-                {
-                    btnCard1.setIcon(back);
-                    change[0] = 1;
-                } 
-                else if (change[1] == 0) 
-                {
-                    btnCard2.setIcon(back);
-                    change[1] = 1;
+            for(int i = 0; i < cardCount; i++){
+                if(change[i] == 0){//Card if flipped
+                    buttons.get(i).setIcon(back);
+                    change[i] = 1;
                 }
-                else if (change[2] == 0) 
-                {
-                    btnCard3.setIcon(back);
-                    change[2] = 1;
-                }
-                else if (change[3] == 0) 
-                {
-                    btnCard4.setIcon(back);
-                    change[3] = 1;
-                }
-                else if (change[4] == 0) 
-                {
-                    btnCard5.setIcon(back);
-                    change[4] = 1;
-                }
-                else if (change[5] == 0) 
-                {
-                    btnCard6.setIcon(back);
-                    change[5] = 1;
-                }
-                else if (change[6] == 0) 
-                {
-                    btnCard7.setIcon(back);
-                    change[6] = 1;
-                }
-                else if (change[7] == 0) 
-                {
-                    btnCard8.setIcon(back);
-                    change[7] = 1;
-                }
-                else if (change[8] == 0) 
-                {
-                    btnCard9.setIcon(back);
-                    change[8] = 1;
-                }
-                else if (change[9] == 0) 
-                {
-                    btnCard10.setIcon(back);
-                    change[9] = 1;
-                }
-                else if (change[10] == 0) 
-                {
-                    btnCard11.setIcon(back);
-                    change[10] = 1;
-                }
-                else if (change[11] == 0) 
-                {
-                    btnCard12.setIcon(back);
-                    change[11] = 1;
-                }
-                else if (change[12] == 0) 
-                {
-                    btnCard13.setIcon(back);
-                    change[12] = 1;
-                }
-                else if (change[13] == 0) 
-                {
-                    btnCard14.setIcon(back);
-                    change[13] = 1;
-                }
-                else if (change[14] == 0) 
-                {
-                    btnCard15.setIcon(back);
-                    change[14] = 1;
-                }
-                else if (change[15] == 0) 
-                {
-                    btnCard16.setIcon(back);
-                    change[15] = 1;
-                }
-            } 
+            }
         }
         
     }//GEN-LAST:event_btnGuessAgainActionPerformed
-    //These are all the same
-    private void btnCard2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCard2ActionPerformed
-        
-        String temp = cards.get(1);
-        
-        if (temp.equals("0"))
-        {
-            btnCard2.setIcon(a); // NOI18N
-        }
-        else if (temp.equals("1"))
-        {
-            btnCard2.setIcon(b);
-        }
-        else if (temp.equals("2"))
-        {
-            btnCard2.setIcon(c);
-        }
-        else if (temp.equals("3"))
-        {
-            btnCard2.setIcon(d);
-        }
-        else if (temp.equals("4"))
-        {
-            btnCard2.setIcon(e);
-        }
-        else if (temp.equals("5"))
-        {
-            btnCard2.setIcon(f);
-        }
-        else if (temp.equals("6"))
-        {
-            btnCard2.setIcon(g);
-        }
-        else if (temp.equals("7"))
-        {
-            btnCard2.setIcon(h);
-        }
-        
-        count++;
-        if (count == 1)
-        {
-            c1 = Integer.parseInt(temp);
-            change[1] = 0;
-        }
-        else if (count==2)
-        {
-            c2 = Integer.parseInt(temp);
-            change[1]=0;
-        }
-        
-    }//GEN-LAST:event_btnCard2ActionPerformed
-
-    private void btnCard3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCard3ActionPerformed
-        String temp = cards.get(2);
-        
-        if (temp.equals("0"))
-        {
-            btnCard3.setIcon(a); // NOI18N
-        }
-        else if (temp.equals("1"))
-        {
-            btnCard3.setIcon(b);
-        }
-        else if (temp.equals("2"))
-        {
-            btnCard3.setIcon(c);
-        }
-        else if (temp.equals("3"))
-        {
-            btnCard3.setIcon(d);
-        }
-        else if (temp.equals("4"))
-        {
-            btnCard3.setIcon(e);
-        }
-        else if (temp.equals("5"))
-        {
-            btnCard3.setIcon(f);
-        }
-        else if (temp.equals("6"))
-        {
-            btnCard3.setIcon(g);
-        }
-        else if (temp.equals("7"))
-        {
-            btnCard3.setIcon(h);
-        }
-        
-        count++;
-        if (count == 1)
-        {
-            c1 = Integer.parseInt(temp);
-            change[2] = 0;
-        }
-        else if (count==2)
-        {
-            c2 = Integer.parseInt(temp);
-            change[2]=0;
-        }
-    }//GEN-LAST:event_btnCard3ActionPerformed
-
-    private void btnCard4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCard4ActionPerformed
-        String temp = cards.get(3);
-        
-        if (temp.equals("0"))
-        {
-            btnCard4.setIcon(a); // NOI18N
-        }
-        else if (temp.equals("1"))
-        {
-            btnCard4.setIcon(b);
-        }
-        else if (temp.equals("2"))
-        {
-            btnCard4.setIcon(c);
-        }
-        else if (temp.equals("3"))
-        {
-            btnCard4.setIcon(d);
-        }
-        else if (temp.equals("4"))
-        {
-            btnCard4.setIcon(e);
-        }
-        else if (temp.equals("5"))
-        {
-            btnCard4.setIcon(f);
-        }
-        else if (temp.equals("6"))
-        {
-            btnCard4.setIcon(g);
-        }
-        else if (temp.equals("7"))
-        {
-            btnCard4.setIcon(h);
-        }
-        
-        count++;
-        if (count == 1)
-        {
-            c1 = Integer.parseInt(temp);
-            change[3] = 0;
-        }
-        else if (count==2)
-        {
-            c2 = Integer.parseInt(temp);
-            change[3]=0;
-        }
-    }//GEN-LAST:event_btnCard4ActionPerformed
-
-    private void btnCard5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCard5ActionPerformed
-        String temp = cards.get(4);
-        
-        if (temp.equals("0"))
-        {
-            btnCard5.setIcon(a); // NOI18N
-        }
-        else if (temp.equals("1"))
-        {
-            btnCard5.setIcon(b);
-        }
-        else if (temp.equals("2"))
-        {
-            btnCard5.setIcon(c);
-        }
-        else if (temp.equals("3"))
-        {
-            btnCard5.setIcon(d);
-        }
-        else if (temp.equals("4"))
-        {
-            btnCard5.setIcon(e);
-        }
-        else if (temp.equals("5"))
-        {
-            btnCard5.setIcon(f);
-        }
-        else if (temp.equals("6"))
-        {
-            btnCard5.setIcon(g);
-        }
-        else if (temp.equals("7"))
-        {
-            btnCard5.setIcon(h);
-        }
-        
-        count++;
-        if (count == 1)
-        {
-            c1 = Integer.parseInt(temp);
-            change[4] = 0;
-        }
-        else if (count==2)
-        {
-            c2 = Integer.parseInt(temp);
-            change[4]=0;
-        }
-    }//GEN-LAST:event_btnCard5ActionPerformed
-
-    private void btnCard6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCard6ActionPerformed
-        String temp = cards.get(5);
-        
-        if (temp.equals("0"))
-        {
-            btnCard6.setIcon(a); // NOI18N
-        }
-        else if (temp.equals("1"))
-        {
-            btnCard6.setIcon(b);
-        }
-        else if (temp.equals("2"))
-        {
-            btnCard6.setIcon(c);
-        }
-        else if (temp.equals("3"))
-        {
-            btnCard6.setIcon(d);
-        }
-        else if (temp.equals("4"))
-        {
-            btnCard6.setIcon(e);
-        }
-        else if (temp.equals("5"))
-        {
-            btnCard6.setIcon(f);
-        }
-        else if (temp.equals("6"))
-        {
-            btnCard6.setIcon(g);
-        }
-        else if (temp.equals("7"))
-        {
-            btnCard6.setIcon(h);
-        }
-        
-        count++;
-        if (count == 1)
-        {
-            c1 = Integer.parseInt(temp);
-            change[5] = 0;
-        }
-        else if (count==2)
-        {
-            c2 = Integer.parseInt(temp);
-            change[5]=0;
-        }
-    }//GEN-LAST:event_btnCard6ActionPerformed
-
-    private void btnCard7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCard7ActionPerformed
-        String temp = cards.get(6);
-        
-        if (temp.equals("0"))
-        {
-            btnCard7.setIcon(a); // NOI18N
-        }
-        else if (temp.equals("1"))
-        {
-            btnCard7.setIcon(b);
-        }
-        else if (temp.equals("2"))
-        {
-            btnCard7.setIcon(c);
-        }
-        else if (temp.equals("3"))
-        {
-            btnCard7.setIcon(d);
-        }
-        else if (temp.equals("4"))
-        {
-            btnCard7.setIcon(e);
-        }
-        else if (temp.equals("5"))
-        {
-            btnCard7.setIcon(f);
-        }
-        else if (temp.equals("6"))
-        {
-            btnCard7.setIcon(g);
-        }
-        else if (temp.equals("7"))
-        {
-            btnCard7.setIcon(h);
-        }
-        
-        count++;
-        if (count == 1)
-        {
-            c1 = Integer.parseInt(temp);
-            change[6] = 0;
-        }
-        else if (count==2)
-        {
-            c2 = Integer.parseInt(temp);
-            change[6]=0;
-        }
-    }//GEN-LAST:event_btnCard7ActionPerformed
-
-    private void btnCard8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCard8ActionPerformed
-        String temp = cards.get(7);
-        
-        if (temp.equals("0"))
-        {
-            btnCard8.setIcon(a); // NOI18N
-        }
-        else if (temp.equals("1"))
-        {
-            btnCard8.setIcon(b);
-        }
-        else if (temp.equals("2"))
-        {
-            btnCard8.setIcon(c);
-        }
-        else if (temp.equals("3"))
-        {
-            btnCard8.setIcon(d);
-        }
-        else if (temp.equals("4"))
-        {
-            btnCard8.setIcon(e);
-        }
-        else if (temp.equals("5"))
-        {
-            btnCard8.setIcon(f);
-        }
-        else if (temp.equals("6"))
-        {
-            btnCard8.setIcon(g);
-        }
-        else if (temp.equals("7"))
-        {
-            btnCard8.setIcon(h);
-        }
-        
-        count++;
-        if (count == 1)
-        {
-            c1 = Integer.parseInt(temp);
-            change[7] = 0;
-        }
-        else if (count==2)
-        {
-            c2 = Integer.parseInt(temp);
-            change[7]=0;
-        }
-    }//GEN-LAST:event_btnCard8ActionPerformed
-
-    private void btnCard9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCard9ActionPerformed
-        String temp = cards.get(8);
-        
-        if (temp.equals("0"))
-        {
-            btnCard9.setIcon(a); // NOI18N
-        }
-        else if (temp.equals("1"))
-        {
-            btnCard9.setIcon(b);
-        }
-        else if (temp.equals("2"))
-        {
-            btnCard9.setIcon(c);
-        }
-        else if (temp.equals("3"))
-        {
-            btnCard9.setIcon(d);
-        }
-        else if (temp.equals("4"))
-        {
-            btnCard9.setIcon(e);
-        }
-        else if (temp.equals("5"))
-        {
-            btnCard9.setIcon(f);
-        }
-        else if (temp.equals("6"))
-        {
-            btnCard9.setIcon(g);
-        }
-        else if (temp.equals("7"))
-        {
-            btnCard9.setIcon(h);
-        }
-        
-        count++;
-        if (count == 1)
-        {
-            c1 = Integer.parseInt(temp);
-            change[8] = 0;
-        }
-        else if (count==2)
-        {
-            c2 = Integer.parseInt(temp);
-            change[8]=0;
-        }
-    }//GEN-LAST:event_btnCard9ActionPerformed
-
-    private void btnCard10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCard10ActionPerformed
-        String temp = cards.get(9);
-        
-        if (temp.equals("0"))
-        {
-            btnCard10.setIcon(a); // NOI18N
-        }
-        else if (temp.equals("1"))
-        {
-            btnCard10.setIcon(b);
-        }
-        else if (temp.equals("2"))
-        {
-            btnCard10.setIcon(c);
-        }
-        else if (temp.equals("3"))
-        {
-            btnCard10.setIcon(d);
-        }
-        else if (temp.equals("4"))
-        {
-            btnCard10.setIcon(e);
-        }
-        else if (temp.equals("5"))
-        {
-            btnCard10.setIcon(f);
-        }
-        else if (temp.equals("6"))
-        {
-            btnCard10.setIcon(g);
-        }
-        else if (temp.equals("7"))
-        {
-            btnCard10.setIcon(h);
-        }
-        
-        count++;
-        if (count == 1)
-        {
-            c1 = Integer.parseInt(temp);
-            change[9] = 0;
-        }
-        else if (count==2)
-        {
-            c2 = Integer.parseInt(temp);
-            change[9]=0;
-        }
-    }//GEN-LAST:event_btnCard10ActionPerformed
-
-    private void btnCard11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCard11ActionPerformed
-        String temp = cards.get(10);
-        
-        if (temp.equals("0"))
-        {
-            btnCard11.setIcon(a); // NOI18N
-        }
-        else if (temp.equals("1"))
-        {
-            btnCard11.setIcon(b);
-        }
-        else if (temp.equals("2"))
-        {
-            btnCard11.setIcon(c);
-        }
-        else if (temp.equals("3"))
-        {
-            btnCard11.setIcon(d);
-        }
-        else if (temp.equals("4"))
-        {
-            btnCard11.setIcon(e);
-        }
-        else if (temp.equals("5"))
-        {
-            btnCard11.setIcon(f);
-        }
-        else if (temp.equals("6"))
-        {
-            btnCard11.setIcon(g);
-        }
-        else if (temp.equals("7"))
-        {
-            btnCard11.setIcon(h);
-        }
-        
-        count++;
-        if (count == 1)
-        {
-            c1 = Integer.parseInt(temp);
-            change[10] = 0;
-        }
-        else if (count==2)
-        {
-            c2 = Integer.parseInt(temp);
-            change[10]=0;
-        }
-    }//GEN-LAST:event_btnCard11ActionPerformed
-
-    private void btnCard12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCard12ActionPerformed
-        String temp = cards.get(11);
-        
-        if (temp.equals("0"))
-        {
-            btnCard12.setIcon(a); // NOI18N
-        }
-        else if (temp.equals("1"))
-        {
-            btnCard12.setIcon(b);
-        }
-        else if (temp.equals("2"))
-        {
-            btnCard12.setIcon(c);
-        }
-        else if (temp.equals("3"))
-        {
-            btnCard12.setIcon(d);
-        }
-        else if (temp.equals("4"))
-        {
-            btnCard12.setIcon(e);
-        }
-        else if (temp.equals("5"))
-        {
-            btnCard12.setIcon(f);
-        }
-        else if (temp.equals("6"))
-        {
-            btnCard12.setIcon(g);
-        }
-        else if (temp.equals("7"))
-        {
-            btnCard12.setIcon(h);
-        }
-        
-        count++;
-        if (count == 1)
-        {
-            c1 = Integer.parseInt(temp);
-            change[11] = 0;
-        }
-        else if (count==2)
-        {
-            c2 = Integer.parseInt(temp);
-            change[11]=0;
-        }
-    }//GEN-LAST:event_btnCard12ActionPerformed
-
-    private void btnCard13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCard13ActionPerformed
-        String temp = cards.get(12);
-        
-        if (temp.equals("0"))
-        {
-            btnCard13.setIcon(a); // NOI18N
-        }
-        else if (temp.equals("1"))
-        {
-            btnCard13.setIcon(b);
-        }
-        else if (temp.equals("2"))
-        {
-            btnCard13.setIcon(c);
-        }
-        else if (temp.equals("3"))
-        {
-            btnCard13.setIcon(d);
-        }
-        else if (temp.equals("4"))
-        {
-            btnCard13.setIcon(e);
-        }
-        else if (temp.equals("5"))
-        {
-            btnCard13.setIcon(f);
-        }
-        else if (temp.equals("6"))
-        {
-            btnCard13.setIcon(g);
-        }
-        else if (temp.equals("7"))
-        {
-            btnCard13.setIcon(h);
-        }
-        
-        count++;
-        if (count == 1)
-        {
-            c1 = Integer.parseInt(temp);
-            change[12] = 0;
-        }
-        else if (count==2)
-        {
-            c2 = Integer.parseInt(temp);
-            change[12]=0;
-        }
-    }//GEN-LAST:event_btnCard13ActionPerformed
-
-    private void btnCard14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCard14ActionPerformed
-        String temp = cards.get(13);
-        
-        if (temp.equals("0"))
-        {
-            btnCard14.setIcon(a); // NOI18N
-        }
-        else if (temp.equals("1"))
-        {
-            btnCard14.setIcon(b);
-        }
-        else if (temp.equals("2"))
-        {
-            btnCard14.setIcon(c);
-        }
-        else if (temp.equals("3"))
-        {
-            btnCard14.setIcon(d);
-        }
-        else if (temp.equals("4"))
-        {
-            btnCard14.setIcon(e);
-        }
-        else if (temp.equals("5"))
-        {
-            btnCard14.setIcon(f);
-        }
-        else if (temp.equals("6"))
-        {
-            btnCard14.setIcon(g);
-        }
-        else if (temp.equals("7"))
-        {
-            btnCard14.setIcon(h);
-        }
-        
-        count++;
-        if (count == 1)
-        {
-            c1 = Integer.parseInt(temp);
-            change[13] = 0;
-        }
-        else if (count==2)
-        {
-            c2 = Integer.parseInt(temp);
-            change[13]=0;
-        }
-    }//GEN-LAST:event_btnCard14ActionPerformed
-
-    private void btnCard15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCard15ActionPerformed
-        String temp = cards.get(14);
-        
-        if (temp.equals("0"))
-        {
-            btnCard15.setIcon(a); // NOI18N
-        }
-        else if (temp.equals("1"))
-        {
-            btnCard15.setIcon(b);
-        }
-        else if (temp.equals("2"))
-        {
-            btnCard15.setIcon(c);
-        }
-        else if (temp.equals("3"))
-        {
-            btnCard15.setIcon(d);
-        }
-        else if (temp.equals("4"))
-        {
-            btnCard15.setIcon(e);
-        }
-        else if (temp.equals("5"))
-        {
-            btnCard15.setIcon(f);
-        }
-        else if (temp.equals("6"))
-        {
-            btnCard15.setIcon(g);
-        }
-        else if (temp.equals("7"))
-        {
-            btnCard15.setIcon(h);
-        }
-        
-        count++;
-        if (count == 1)
-        {
-            c1 = Integer.parseInt(temp);
-            change[14] = 0;
-        }
-        else if (count==2)
-        {
-            c2 = Integer.parseInt(temp);
-            change[14]=0;
-        }
-    }//GEN-LAST:event_btnCard15ActionPerformed
-
-    private void btnCard16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCard16ActionPerformed
-        String temp = cards.get(15);
-        
-        if (temp.equals("0"))
-        {
-            btnCard16.setIcon(a); // NOI18N
-        }
-        else if (temp.equals("1"))
-        {
-            btnCard16.setIcon(b);
-        }
-        else if (temp.equals("2"))
-        {
-            btnCard16.setIcon(c);
-        }
-        else if (temp.equals("3"))
-        {
-            btnCard16.setIcon(d);
-        }
-        else if (temp.equals("4"))
-        {
-            btnCard16.setIcon(e);
-        }
-        else if (temp.equals("5"))
-        {
-            btnCard16.setIcon(f);
-        }
-        else if (temp.equals("6"))
-        {
-            btnCard16.setIcon(g);
-        }
-        else if (temp.equals("7"))
-        {
-            btnCard16.setIcon(h);
-        }
-        
-        count++;
-        if (count == 1)
-        {
-            c1 = Integer.parseInt(temp);
-            change[15] = 0;
-        }
-        else if (count==2)
-        {
-            c2 = Integer.parseInt(temp);
-            change[15]=0;
-        }
-    }//GEN-LAST:event_btnCard16ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1306,22 +254,6 @@ public class matchingGameSwaineUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCard1;
-    private javax.swing.JButton btnCard10;
-    private javax.swing.JButton btnCard11;
-    private javax.swing.JButton btnCard12;
-    private javax.swing.JButton btnCard13;
-    private javax.swing.JButton btnCard14;
-    private javax.swing.JButton btnCard15;
-    private javax.swing.JButton btnCard16;
-    private javax.swing.JButton btnCard2;
-    private javax.swing.JButton btnCard3;
-    private javax.swing.JButton btnCard4;
-    private javax.swing.JButton btnCard5;
-    private javax.swing.JButton btnCard6;
-    private javax.swing.JButton btnCard7;
-    private javax.swing.JButton btnCard8;
-    private javax.swing.JButton btnCard9;
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnGuessAgain;
     private javax.swing.JButton btnPlay;
@@ -1330,4 +262,22 @@ public class matchingGameSwaineUI extends javax.swing.JFrame {
     private javax.swing.JPanel controlsPanel;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
+
+    //Button pressed
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        JButton button = (JButton)e.getSource();
+        if(button.getName().startsWith("guessButton")){
+            int buttonID = Integer.parseInt(button.getName().substring(11));//Parse id from name
+            int cardType = cards.get(buttonID);//Get type of current card
+            button.setIcon(icons.get(cardType));//Set icon to our card
+            change[buttonID] = 0;//Set state of card to flipped
+            count++;//Add to cards flipped counter
+            if(count == 1){//Set c1 or c2 depending on which card we are
+                c1 = cardType;
+            }else if(count == 2){
+                c2 = cardType;
+            }
+        }
+    }
 }
