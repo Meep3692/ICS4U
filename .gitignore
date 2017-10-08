@@ -11,12 +11,14 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.ear
-*.zip
 *.tar.gz
 *.rar
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+/U1/A7/U1A7_Powers/nbproject/private/
+/U1/A7/U1A7_Powers/build/
+/U2/A2/U2A2_SumElements/nbproject/private/
+/U2/A2/U2A2_SumElements/build/
