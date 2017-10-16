@@ -29,23 +29,36 @@ public class StudentGrades extends javax.swing.JFrame {
         java.awt.GridBagConstraints gridBagConstraints;
 
         controlsPanel = new javax.swing.JPanel();
+        namePanel = new javax.swing.JPanel();
         nameLabel = new javax.swing.JLabel();
         firstNameLabel = new javax.swing.JLabel();
         lastNameLabel = new javax.swing.JLabel();
         firstNameField = new javax.swing.JTextField();
         lastNameField = new javax.swing.JTextField();
+        buttonsPanel = new javax.swing.JPanel();
         addButton = new javax.swing.JButton();
         listButton = new javax.swing.JButton();
         studentAvgButton = new javax.swing.JButton();
         courseAvgButton = new javax.swing.JButton();
+        testsPanel = new javax.swing.JPanel();
+        test1Label = new javax.swing.JLabel();
+        test1Field = new javax.swing.JTextField();
+        test2Label = new javax.swing.JLabel();
+        test2Field = new javax.swing.JTextField();
+        test3Label = new javax.swing.JLabel();
+        test3Field = new javax.swing.JTextField();
+        test4Label = new javax.swing.JLabel();
+        test4Field = new javax.swing.JTextField();
         outputScrollPane = new javax.swing.JScrollPane();
         outputTextArea = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        java.awt.GridBagLayout controlsPanelLayout = new java.awt.GridBagLayout();
-        controlsPanelLayout.columnWidths = new int[] {0, 100};
-        controlsPanel.setLayout(controlsPanelLayout);
+        controlsPanel.setLayout(new java.awt.GridBagLayout());
+
+        java.awt.GridBagLayout jPanel1Layout = new java.awt.GridBagLayout();
+        jPanel1Layout.columnWidths = new int[] {0, 100};
+        namePanel.setLayout(jPanel1Layout);
 
         nameLabel.setText("Name:");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -53,55 +66,134 @@ public class StudentGrades extends javax.swing.JFrame {
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        controlsPanel.add(nameLabel, gridBagConstraints);
+        namePanel.add(nameLabel, gridBagConstraints);
 
         firstNameLabel.setText("First:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        controlsPanel.add(firstNameLabel, gridBagConstraints);
+        namePanel.add(firstNameLabel, gridBagConstraints);
 
         lastNameLabel.setText("Last:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
-        controlsPanel.add(lastNameLabel, gridBagConstraints);
+        namePanel.add(lastNameLabel, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        controlsPanel.add(firstNameField, gridBagConstraints);
+        namePanel.add(firstNameField, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        controlsPanel.add(lastNameField, gridBagConstraints);
+        namePanel.add(lastNameField, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        controlsPanel.add(namePanel, gridBagConstraints);
+
+        buttonsPanel.setLayout(new java.awt.GridBagLayout());
 
         addButton.setText("Add");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(0, 30, 0, 0);
-        controlsPanel.add(addButton, gridBagConstraints);
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
+        buttonsPanel.add(addButton, gridBagConstraints);
 
         listButton.setText("List");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.insets = new java.awt.Insets(0, 30, 0, 0);
-        controlsPanel.add(listButton, gridBagConstraints);
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
+        buttonsPanel.add(listButton, gridBagConstraints);
 
         studentAvgButton.setText("Student Average");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 1;
-        controlsPanel.add(studentAvgButton, gridBagConstraints);
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
+        buttonsPanel.add(studentAvgButton, gridBagConstraints);
 
         courseAvgButton.setText("Course Average");
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
+        buttonsPanel.add(courseAvgButton, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        controlsPanel.add(buttonsPanel, gridBagConstraints);
+
+        java.awt.GridBagLayout testsPanelLayout = new java.awt.GridBagLayout();
+        testsPanelLayout.columnWidths = new int[] {0, 60, 0, 60, 0, 60, 0, 60};
+        testsPanel.setLayout(testsPanelLayout);
+
+        test1Label.setText("Test 1:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
+        testsPanel.add(test1Label, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
+        testsPanel.add(test1Field, gridBagConstraints);
+
+        test2Label.setText("Test 2:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
+        testsPanel.add(test2Label, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 2;
-        controlsPanel.add(courseAvgButton, gridBagConstraints);
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
+        testsPanel.add(test2Field, gridBagConstraints);
+
+        test3Label.setText("Test 3:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
+        testsPanel.add(test3Label, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 5;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
+        testsPanel.add(test3Field, gridBagConstraints);
+
+        test4Label.setText("Test 4:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 6;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
+        testsPanel.add(test4Label, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 7;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
+        testsPanel.add(test4Field, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        controlsPanel.add(testsPanel, gridBagConstraints);
 
         getContentPane().add(controlsPanel, java.awt.BorderLayout.PAGE_START);
 
@@ -151,6 +243,7 @@ public class StudentGrades extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;
+    private javax.swing.JPanel buttonsPanel;
     private javax.swing.JPanel controlsPanel;
     private javax.swing.JButton courseAvgButton;
     private javax.swing.JTextField firstNameField;
@@ -159,8 +252,18 @@ public class StudentGrades extends javax.swing.JFrame {
     private javax.swing.JLabel lastNameLabel;
     private javax.swing.JButton listButton;
     private javax.swing.JLabel nameLabel;
+    private javax.swing.JPanel namePanel;
     private javax.swing.JScrollPane outputScrollPane;
     private javax.swing.JTextArea outputTextArea;
     private javax.swing.JButton studentAvgButton;
+    private javax.swing.JTextField test1Field;
+    private javax.swing.JLabel test1Label;
+    private javax.swing.JTextField test2Field;
+    private javax.swing.JLabel test2Label;
+    private javax.swing.JTextField test3Field;
+    private javax.swing.JLabel test3Label;
+    private javax.swing.JTextField test4Field;
+    private javax.swing.JLabel test4Label;
+    private javax.swing.JPanel testsPanel;
     // End of variables declaration//GEN-END:variables
 }
