@@ -5,6 +5,9 @@
  */
 package studentgrades;
 
+import java.awt.Dialog;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Darian
@@ -47,11 +50,6 @@ public class StudentGrades extends javax.swing.JFrame {
         lastNameLabel = new javax.swing.JLabel();
         firstNameField = new javax.swing.JTextField();
         lastNameField = new javax.swing.JTextField();
-        buttonsPanel = new javax.swing.JPanel();
-        addButton = new javax.swing.JButton();
-        listButton = new javax.swing.JButton();
-        studentAvgButton = new javax.swing.JButton();
-        courseAvgButton = new javax.swing.JButton();
         testsPanel = new javax.swing.JPanel();
         test1Label = new javax.swing.JLabel();
         test1Field = new javax.swing.JTextField();
@@ -61,6 +59,11 @@ public class StudentGrades extends javax.swing.JFrame {
         test3Field = new javax.swing.JTextField();
         test4Label = new javax.swing.JLabel();
         test4Field = new javax.swing.JTextField();
+        buttonsPanel = new javax.swing.JPanel();
+        addButton = new javax.swing.JButton();
+        listButton = new javax.swing.JButton();
+        studentAvgButton = new javax.swing.JButton();
+        courseAvgButton = new javax.swing.JButton();
         outputScrollPane = new javax.swing.JScrollPane();
         outputTextArea = new javax.swing.JTextArea();
 
@@ -107,52 +110,6 @@ public class StudentGrades extends javax.swing.JFrame {
         gridBagConstraints.gridy = 0;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         controlsPanel.add(namePanel, gridBagConstraints);
-
-        buttonsPanel.setLayout(new java.awt.GridBagLayout());
-
-        addButton.setText("Add");
-        addButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addButtonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
-        buttonsPanel.add(addButton, gridBagConstraints);
-
-        listButton.setText("List");
-        listButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                listButtonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
-        buttonsPanel.add(listButton, gridBagConstraints);
-
-        studentAvgButton.setText("Student Average");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
-        buttonsPanel.add(studentAvgButton, gridBagConstraints);
-
-        courseAvgButton.setText("Course Average");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
-        buttonsPanel.add(courseAvgButton, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        controlsPanel.add(buttonsPanel, gridBagConstraints);
 
         java.awt.GridBagLayout testsPanelLayout = new java.awt.GridBagLayout();
         testsPanelLayout.columnWidths = new int[] {0, 60, 0, 60, 0, 60, 0, 60};
@@ -217,6 +174,57 @@ public class StudentGrades extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         controlsPanel.add(testsPanel, gridBagConstraints);
 
+        buttonsPanel.setLayout(new java.awt.GridBagLayout());
+
+        addButton.setText("Add");
+        addButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
+        buttonsPanel.add(addButton, gridBagConstraints);
+
+        listButton.setText("List");
+        listButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                listButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
+        buttonsPanel.add(listButton, gridBagConstraints);
+
+        studentAvgButton.setText("Student Average");
+        studentAvgButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                studentAvgButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
+        buttonsPanel.add(studentAvgButton, gridBagConstraints);
+
+        courseAvgButton.setText("Course Average");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
+        buttonsPanel.add(courseAvgButton, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        controlsPanel.add(buttonsPanel, gridBagConstraints);
+
         getContentPane().add(controlsPanel, java.awt.BorderLayout.PAGE_START);
 
         outputTextArea.setColumns(20);
@@ -231,6 +239,16 @@ public class StudentGrades extends javax.swing.JFrame {
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         //Add a student to the array based on the data given
+        
+        //Make sure we have less than 15 students
+        if(studentsAdded >= 15){
+            //15 students have already been added
+            
+            //Show an error message to tell the user that they cannot add any more students
+            JOptionPane.showMessageDialog(this, "15 students have already been added!", "Max Students Reached", JOptionPane.ERROR_MESSAGE);
+            //Return to prevent the rest of the method from running
+            return;
+        }
         
         //Strings to hold fist and last name
         String firstName, lastName;
@@ -274,16 +292,16 @@ public class StudentGrades extends javax.swing.JFrame {
         //Limit i to be less than students added as students added is an index with no student yet
         for(int i = 0; i < studentsAdded; i++){
             //Formats student info on 5 lines
-            //First line is thier name as Last, First
+            //First line is thier name as First Last
             //2nd to 5th lines are test scores, tab indented by 1
             String info = String.format(
-                    "%s, %s:\n"//Name: First, Last
+                    "%s %s:\n"//Name: First, Last
                         + "\tTest 1: %s\n"//Test X: (score)
                         + "\tTest 2: %s\n"
                         + "\tTest 3: %s\n"
                         + "\tTest 4: %s\n", 
-                    studentInfo[i][1],//Last name
                     studentInfo[i][0],//First name
+                    studentInfo[i][1],//Last name
                     studentInfo[i][2],//Test 1
                     studentInfo[i][3],//Test 2
                     studentInfo[i][4],//Test 3
@@ -294,6 +312,54 @@ public class StudentGrades extends javax.swing.JFrame {
         //Set the text of the text area to the final output string with all the student info
         outputTextArea.setText(output);
     }//GEN-LAST:event_listButtonActionPerformed
+
+    private void studentAvgButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_studentAvgButtonActionPerformed
+        //Variable to store index of the student we're averaging
+        //Set to -1 so we can check if we can't find the student (it will only be -1 if we can't find the student)
+        int studentIndex = -1;
+        
+        //Store the first and last name of the student we are looking for
+        String first, last;
+        
+        //Get name values from fields
+        first = firstNameField.getText();
+        last = lastNameField.getText();
+        
+        //Iterate through the students until we find the one we want
+        for(int i = 0; i < studentsAdded; i++){
+            //Check if the first and last name are equal to the ones of the student at this index
+            if(first.equals(studentInfo[i][0]) && last.equals(studentInfo[i][1])){
+                //Set index variable to current index
+                studentIndex = i;
+                //Exit the loop now that we have the index
+                break;
+            }
+        }
+        
+        //If studentIndex is -1 then we couldn't find the student
+        if(studentIndex == -1){
+            //Output to the area that the student could not be found
+            outputTextArea.setText(String.format("Student not found: %s %s", first, last));
+            //Return to prevent trying to find the average on a non-exsistant student
+            return;
+        }
+        
+        //Get test values from the array and cast them to Doubles
+        //They need this cast as they are stored as Objects in the array
+        double test1 = (Double)studentInfo[studentIndex][2];
+        double test2 = (Double)studentInfo[studentIndex][3];
+        double test3 = (Double)studentInfo[studentIndex][4];
+        double test4 = (Double)studentInfo[studentIndex][5];
+        
+        //Calculate the average
+        double average = (test1 + test2 + test3 + test4) / 4;
+        
+        //Create formated string for output with full name and average
+        String output = String.format("%s %s's average is %s", first, last, average);
+        
+        //Set text area the show output string
+        outputTextArea.setText(output);
+    }//GEN-LAST:event_studentAvgButtonActionPerformed
 
     /**
      * @param args the command line arguments
