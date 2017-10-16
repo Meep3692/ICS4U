@@ -10,12 +10,24 @@ package studentgrades;
  * @author Darian
  */
 public class StudentGrades extends javax.swing.JFrame {
-
+    //Array to store student info
+    //For each row, 0 is first name, 1 is last name, 2-5 is test scores
+    private Object[][] studentInfo;
+    
+    //Stores index at which to add new student
+    //(initially 0, after adding student at index 0, will be one)
+    //Also represents how many students have been added
+    private int studentsAdded;
+    
     /**
      * Creates new form StudentGrades
      */
     public StudentGrades() {
         initComponents();
+        //Initialise array to have room for 15 students and 6 pieces of info for each student (first and last names, 4 test scores)
+        studentInfo = new Object[15][6];
+        //No students added yet, next index to add students at is 0
+        studentsAdded = 0;
     }
 
     /**
@@ -99,6 +111,11 @@ public class StudentGrades extends javax.swing.JFrame {
         buttonsPanel.setLayout(new java.awt.GridBagLayout());
 
         addButton.setText("Add");
+        addButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addButtonActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -106,6 +123,11 @@ public class StudentGrades extends javax.swing.JFrame {
         buttonsPanel.add(addButton, gridBagConstraints);
 
         listButton.setText("List");
+        listButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                listButtonActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -199,12 +221,79 @@ public class StudentGrades extends javax.swing.JFrame {
 
         outputTextArea.setColumns(20);
         outputTextArea.setRows(5);
+        outputTextArea.setTabSize(4);
         outputScrollPane.setViewportView(outputTextArea);
 
         getContentPane().add(outputScrollPane, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
+        //Add a student to the array based on the data given
+        
+        //Strings to hold fist and last name
+        String firstName, lastName;
+        
+        //Doubles to hold test scores
+        Double test1, test2, test3, test4;
+        
+        //Get names from name fields
+        firstName = firstNameField.getText();
+        lastName = lastNameField.getText();
+        
+        //Try to parse test scores from input fields
+        try{
+            test1 = Double.parseDouble(test1Field.getText());
+            test2 = Double.parseDouble(test2Field.getText());
+            test3 = Double.parseDouble(test3Field.getText());
+            test4 = Double.parseDouble(test4Field.getText());
+        }catch(NumberFormatException e){
+            //If one of the test scores is formated wrong
+            outputTextArea.setText(e.getLocalizedMessage());
+            return;
+        }
+        //Add info to table as described above table declaration
+        studentInfo[studentsAdded][0] = firstName;
+        studentInfo[studentsAdded][1] = lastName;
+        studentInfo[studentsAdded][2] = test1;
+        studentInfo[studentsAdded][3] = test2;
+        studentInfo[studentsAdded][4] = test3;
+        studentInfo[studentsAdded][5] = test4;
+        
+        //Increment studentsAdded counter to be next avaliable index
+        studentsAdded++;
+    }//GEN-LAST:event_addButtonActionPerformed
+
+    private void listButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listButtonActionPerformed
+        //String to store the ouput we will display
+        //Initialised to be empty as it will be appended
+        String output = "";
+        
+        //Iterate for all the students in the list
+        //Limit i to be less than students added as students added is an index with no student yet
+        for(int i = 0; i < studentsAdded; i++){
+            //Formats student info on 5 lines
+            //First line is thier name as Last, First
+            //2nd to 5th lines are test scores, tab indented by 1
+            String info = String.format(
+                    "%s, %s:\n"//Name: First, Last
+                        + "\tTest 1: %s\n"//Test X: (score)
+                        + "\tTest 2: %s\n"
+                        + "\tTest 3: %s\n"
+                        + "\tTest 4: %s\n", 
+                    studentInfo[i][1],//Last name
+                    studentInfo[i][0],//First name
+                    studentInfo[i][2],//Test 1
+                    studentInfo[i][3],//Test 2
+                    studentInfo[i][4],//Test 3
+                    studentInfo[i][5]);//Test 4
+            //Add this student's info to the output string to be displayed
+            output += info;
+        }
+        //Set the text of the text area to the final output string with all the student info
+        outputTextArea.setText(output);
+    }//GEN-LAST:event_listButtonActionPerformed
 
     /**
      * @param args the command line arguments
