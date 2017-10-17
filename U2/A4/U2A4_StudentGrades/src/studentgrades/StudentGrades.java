@@ -213,6 +213,11 @@ public class StudentGrades extends javax.swing.JFrame {
         buttonsPanel.add(studentAvgButton, gridBagConstraints);
 
         courseAvgButton.setText("Course Average");
+        courseAvgButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                courseAvgButtonActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
@@ -314,6 +319,8 @@ public class StudentGrades extends javax.swing.JFrame {
     }//GEN-LAST:event_listButtonActionPerformed
 
     private void studentAvgButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_studentAvgButtonActionPerformed
+        //Find the average of the specified student
+
         //Variable to store index of the student we're averaging
         //Set to -1 so we can check if we can't find the student (it will only be -1 if we can't find the student)
         int studentIndex = -1;
@@ -360,6 +367,36 @@ public class StudentGrades extends javax.swing.JFrame {
         //Set text area the show output string
         outputTextArea.setText(output);
     }//GEN-LAST:event_studentAvgButtonActionPerformed
+
+    private void courseAvgButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_courseAvgButtonActionPerformed
+        //Variables to store test averages
+        double avg1, avg2, avg3, avg4;
+        //Set them to 0 so they can be added to
+        avg1 = avg2 = avg3 = avg4 = 0;
+        
+        //Iterate through students to add thier test scores to the average
+        for(int i = 0; i < studentsAdded; i++){
+            //Add student's scores to average vars
+            avg1 += (Double)studentInfo[i][2];
+            avg2 += (Double)studentInfo[i][3];
+            avg3 += (Double)studentInfo[i][4];
+            avg4 += (Double)studentInfo[i][5];
+        }
+        //Divide the vars by the number of students added to get the final average
+        avg1 /= studentsAdded;
+        avg2 /= studentsAdded;
+        avg3 /= studentsAdded;
+        avg4 /= studentsAdded;
+        
+        String output = String.format(
+                "Test 1: %s\n"//Output string puts test number to title average all on new lines
+                + "Test 2: %s\n"
+                + "Test 3: %s\n"
+                + "Test 4: %s\n",
+                avg1, avg2, avg3, avg4);
+        //Set ouput text area to show output text
+        outputTextArea.setText(output);
+    }//GEN-LAST:event_courseAvgButtonActionPerformed
 
     /**
      * @param args the command line arguments
