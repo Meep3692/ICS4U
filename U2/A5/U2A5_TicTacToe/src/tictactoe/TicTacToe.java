@@ -6,7 +6,10 @@
 package tictactoe;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.EnumMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 
 /**
@@ -15,9 +18,14 @@ import javax.swing.JButton;
  */
 public class TicTacToe extends javax.swing.JFrame {
 
-    Team currentTurn;
-    Team[][] board;
-    JButton[][] buttons;
+    Team startTeam;//What team started this round
+    
+    Team currentTurn;//Whose turn is it
+    Team[][] board;//3x3 array for the board
+    JButton[][] buttons;//3x3 array for the buttons
+    int spacesLeft;//Keep track of how many spaces are left
+    
+    Map<Team, Integer> wins;//Store wins for each team
     
     /**
      * Creates new form TicTacToe
@@ -26,6 +34,13 @@ public class TicTacToe extends javax.swing.JFrame {
         board = new Team[3][3];//Initialise array for teams
         
         initComponents();
+        
+        wins = new EnumMap<>(Team.class);
+        
+        //Set scores to 0
+        wins.put(Team.CROSS, 0);
+        wins.put(Team.NOUGHT, 0);
+        wins.put(Team.NONE, 0);
         
         //Add game buttons
         buttons = new JButton[3][3];//Initialise array for buttons
@@ -43,6 +58,10 @@ public class TicTacToe extends javax.swing.JFrame {
                 gamePanel.add(buttons[i][l]);
             }//I don't do this with the designer so I have more control and to avoid repeating myself
         }
+        startTeam = Team.CROSS;//Set start team
+        newGame();
+        
+        setSize(500, 300);
     }
 
     /**
@@ -59,6 +78,7 @@ public class TicTacToe extends javax.swing.JFrame {
         dataPanel = new javax.swing.JPanel();
         moveLabel = new javax.swing.JLabel();
         newGameButton = new javax.swing.JButton();
+        winsTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -84,18 +104,44 @@ public class TicTacToe extends javax.swing.JFrame {
         gridBagConstraints.gridy = 1;
         dataPanel.add(newGameButton, gridBagConstraints);
 
+        winsTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"Cross",  new Integer(0)},
+                {"Nought",  new Integer(0)},
+                {"Cat",  new Integer(0)}
+            },
+            new String [] {
+                "Team", "Wins"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        winsTable.setAutoscrolls(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        dataPanel.add(winsTable, gridBagConstraints);
+
         getContentPane().add(dataPanel, java.awt.BorderLayout.EAST);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void newGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newGameButtonActionPerformed
-        for(int i = 0; i < 3; i++){
-            for(int l = 0; l < 3; l++){//Iterate through whole board
-                board[i][l] = Team.NONE;
-            }
-        }
-        currentTurn = Team.CROSS;
+        newGame();
     }//GEN-LAST:event_newGameButtonActionPerformed
 
     private void boardButtonPressed(ActionEvent evt){
@@ -114,13 +160,93 @@ public class TicTacToe extends javax.swing.JFrame {
         y = Integer.parseInt(yString);
         
         if(board[x][y] == Team.NONE){//Make sure this space isn't already taken
-            board[x][y] = currentTurn;
-            buttons[x][y].setText(currentTurn.toString());
-            if(currentTurn == Team.CROSS)//If it's cross' turn, change to nought's
-                currentTurn = Team.NOUGHT;
-            else//Otherwise, it must be nought's turn, change to cross'
-                currentTurn = Team.CROSS;
+            spacesLeft--;//There's one less space on the board
+            board[x][y] = currentTurn;//Set board space
+            buttons[x][y].setText(currentTurn.toString());//Set button text
+            changeCurrentTurn();//Switch to other team turn
+            
+            //Check if someone won
+            Team winning = checkWinner();
+            if(winning != Team.NONE || spacesLeft == 0){//End game because of winner or stalemate
+                wins.put(winning, wins.get(winning) + 1);//Add 1 to that teams score
+                updateScoreBoard();//Update score board
+                if(startTeam == Team.CROSS)//If cross started this game
+                    startTeam = Team.NOUGHT;//Nought starts next game
+                else//otherwise
+                    startTeam = Team.CROSS;//cross starts next game
+                //Start a new game after 1 second
+                new Thread(() -> {
+                    //Wait one second
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ex) {
+                        //This really shouldn't happen
+                        Logger.getLogger(TicTacToe.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    newGame();//Start new game
+                }).start();
+                
+            }
         }
+    }
+    
+    /**
+     * Start a new game
+     */
+    private void newGame(){
+        for(int i = 0; i < 3; i++){
+            for(int l = 0; l < 3; l++){//Iterate through whole board
+                board[i][l] = Team.NONE;//Set board space to none
+                buttons[i][l].setText("");//Clear button text
+            }
+        }
+        spacesLeft = 9;//There are 9 spaces
+        setCurrentTurn(startTeam);//Set to current teams turn
+    }
+    
+    /**
+     * Check the current winner of the game
+     * @return Winning team, Team.NONE if no one has won yet
+     */
+    private Team checkWinner(){
+        for(int i = 0; i < 3; i++){
+            if(board[i][0] != Team.NONE && board[i][0] == board[i][1] && board[i][0] == board[i][2]){
+                //Vertical line
+                return board[i][0];
+            }else if(board[0][i] != Team.NONE && board[0][i] == board[1][i] && board[0][i] == board[2][i]){
+                //Horizontal line
+                return board[0][i];
+            }
+        }
+        if(board[1][1] != Team.NONE){
+            //Check for diagonals
+            if(board[0][0] == board[1][1] && board[2][2] == board[1][1] || board[2][0] == board[1][1] && board[0][2] == board[1][1]){
+                //A diagonal exists
+                return board[1][1];
+            }
+        }
+        return Team.NONE;//No one is currently winning
+    }
+    
+    private void updateScoreBoard(){
+        //Set values in win table to values in wins
+        winsTable.getModel().setValueAt(wins.get(Team.CROSS), 0, 1);
+        winsTable.getModel().setValueAt(wins.get(Team.NOUGHT), 1, 1);
+        winsTable.getModel().setValueAt(wins.get(Team.NONE), 2, 1);
+    }
+    
+    private void changeCurrentTurn(){
+        if(currentTurn == Team.CROSS)//If it's cross' turn, change to nought's
+            setCurrentTurn(Team.NOUGHT);
+        else//Otherwise, it must be nought's turn, change to cross'
+            setCurrentTurn(Team.CROSS);
+    }
+    
+    private void setCurrentTurn(Team setTo){
+        //Set current turn
+        currentTurn = setTo;
+        //Set move label to display current move
+        moveLabel.setText(String.format("Move: %s", currentTurn));
     }
     
     /**
@@ -151,10 +277,8 @@ public class TicTacToe extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new TicTacToe().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new TicTacToe().setVisible(true);
         });
     }
 
@@ -163,5 +287,6 @@ public class TicTacToe extends javax.swing.JFrame {
     private javax.swing.JPanel gamePanel;
     private javax.swing.JLabel moveLabel;
     private javax.swing.JButton newGameButton;
+    private javax.swing.JTable winsTable;
     // End of variables declaration//GEN-END:variables
 }
