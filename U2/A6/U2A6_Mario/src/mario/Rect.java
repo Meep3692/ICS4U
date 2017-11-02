@@ -15,13 +15,25 @@ public class Rect {
     private Vector2 tl, br;
     
     /**
-     * Create a new rectangle
+     * Create a new rectangle from corner vectors
      * @param topLeft The top left point of the rectangle
      * @param bottomRight The bottom right point of the rectangle
      */
     public Rect(Vector2 topLeft, Vector2 bottomRight){
         tl = topLeft;
         br = bottomRight;
+    }
+    
+    /**
+     * Create a new rectangle from outer bounds
+     * @param left Leftmost bound
+     * @param right Rightmost bound
+     * @param top Topmost bound
+     * @param bottom Bottommost bound
+     */
+    public Rect(double left, double right, double top, double bottom){
+        //Create vectors and call other constructor
+        this(new Vector2(left, top), new Vector2(right, bottom));
     }
     
     /**

@@ -100,6 +100,36 @@ public class Vector2 {
     }
     
     /**
+     * Add one vector to another
+     * @param first First vector
+     * @param second Vector to add to first
+     * @return first + second
+     */
+    public static Vector2 add(Vector2 first, Vector2 second){
+        double x = first.getx() + second.getx();//Add x components
+        double y = first.gety() + second.gety();//Add y components
+        return new Vector2(x, y);//Create vector and return it
+    }
+    
+    /**
+     * Subtract one vector from another
+     * @param first First vector
+     * @param second Vector to subtract from first
+     * @return first - second
+     */
+    public static Vector2 sub(Vector2 first, Vector2 second){
+        double x = first.getx() - second.getx();//Subtract x components
+        double y = first.gety() - second.gety();//Subtract y components
+        return new Vector2(x, y);//Create vector and return it
+    }
+    
+    public static Vector2 mul(Vector2 vector, double scalar){
+        Vector2 out = vector.clone();//Clone vector to be safe
+        out.setMagnitude(out.getMagnitude() * scalar);
+        return out;
+    }
+    
+    /**
      * Create a clone of this vector
      * @return A clone of this vector in a different location in memory
      */

@@ -6,18 +6,23 @@
 package mario;
 
 /**
- *
+ * An object in the game
  * @author Darian
  */
 public class GameObject {
     
     //Vectors for storing position, velocity, and force for physics
-    private Vector2 position, velocity, force;
+    private Vector2 position, velocity;
+    //Rectangle for the collision area
+    private Rect hitbox;
     
     public GameObject(){
-        position = velocity = force = new Vector2();//Set all vectors to 0
+        position = velocity = new Vector2();//Set all vectors to 0
+        hitbox = new Rect(-1, 1, -1, 1);
     }
     
-    
+    public void physicsUpdate(double deltaTime){
+        
+    }
     
 }
