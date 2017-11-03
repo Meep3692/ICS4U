@@ -137,4 +137,40 @@ public class Vector2 {
     public Vector2 clone(){
         return new Vector2(x, y);
     }
+
+    @Override
+    public int hashCode() {
+        //Auto generated hashcode
+        int hash = 7;
+        hash = 53 * hash + (int) (Double.doubleToLongBits(this.x) ^ (Double.doubleToLongBits(this.x) >>> 32));
+        hash = 53 * hash + (int) (Double.doubleToLongBits(this.y) ^ (Double.doubleToLongBits(this.y) >>> 32));
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        //Auto generated equals
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Vector2 other = (Vector2) obj;
+        if (Double.doubleToLongBits(this.x) != Double.doubleToLongBits(other.x)) {
+            return false;
+        }
+        if (Double.doubleToLongBits(this.y) != Double.doubleToLongBits(other.y)) {
+            return false;
+        }
+        return true;
+    }
+    
+    @Override
+    public String toString(){
+        return String.format("(%f, %f)", x, y);
+    }
 }

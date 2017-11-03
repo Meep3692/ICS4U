@@ -5,24 +5,35 @@
  */
 package mario;
 
+import java.util.List;
+
 /**
  * An object in the game
  * @author Darian
  */
 public class GameObject {
     
-    //Vectors for storing position, velocity, and force for physics
-    private Vector2 position, velocity;
-    //Rectangle for the collision area
-    private Rect hitbox;
+    //Vectors for storing position for physics
+    Vector2 position;
+    //Vectors for storing velocity for physics
+    Vector2 velocity;
     
     public GameObject(){
         position = velocity = new Vector2();//Set all vectors to 0
-        hitbox = new Rect(-1, 1, -1, 1);
     }
     
     public void physicsUpdate(double deltaTime){
+        //Acceleration due to gravity
+        velocity = Vector2.add(velocity, Vector2.mul(Game.GRAVITY, deltaTime));
         
+        //Change in position based on current velocity
+        position = Vector2.add(position, Vector2.mul(velocity, deltaTime));
+        
+        //Stop us from falling through the floor
+        if(position.gety() > 10){
+            position.sety(10);
+            velocity.sety(0);
+        }
     }
     
 }
