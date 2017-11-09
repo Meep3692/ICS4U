@@ -6,7 +6,7 @@
 package mp3inventory;
 
 /**
- *
+ * Class for storing Mp3 information
  * @author Darian
  */
 public class Mp3 {

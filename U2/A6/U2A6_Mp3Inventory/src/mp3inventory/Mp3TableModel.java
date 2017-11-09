@@ -15,10 +15,12 @@ import javax.swing.table.AbstractTableModel;
  */
 public class Mp3TableModel extends AbstractTableModel {
 
-    private List<Mp3> data;
+    private List<Mp3> data;//List of mp3s
+    private int sorting;//Current sorting method
     
     public Mp3TableModel(){
-        data = new ArrayList<>();
+        data = new ArrayList<>();//Initialise list
+        sorting = 1;//Default to 1
     }
     
     /**
@@ -27,6 +29,20 @@ public class Mp3TableModel extends AbstractTableModel {
      */
     public void addSong(Mp3 mp3){
         data.add(mp3);
+        sortBy(sorting);//Keep everything in order
+    }
+    
+    /**
+     * Sort by a specific column
+     * @param column Index of column, negative for inverse sorting
+     */
+    public void sortBy(int column){
+        data.sort(new Mp3Comparator(column));//Sort by comparator with column
+        sorting = column;//Set current sorting method
+    }
+    
+    public int getSortingMethod(){
+        return sorting;
     }
 
     @Override
@@ -70,11 +86,41 @@ public class Mp3TableModel extends AbstractTableModel {
             case 2://Album
                 return data.get(rowIndex).getAlbum();
             case 3://Length
-                return data.get(rowIndex).getLength();
+                int length = data.get(rowIndex).getLength();
+                if(length < 0) return "Unknown"; else return length;//Return unknown if it's -1
             case 4://Year
-                return data.get(rowIndex).getYear();
+                int year = data.get(rowIndex).getYear();
+                if(year < 0) return "Unknown"; else return year;//Same as length
         }
         return null;//This shouldn't be able to happen
     }
+
+    @Override
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+        //Switch on column index and set values acordingly
+        switch(columnIndex){
+            case 0://Title
+                data.get(rowIndex).setTitle((String)aValue);
+                return;
+            case 1://Artist
+                data.get(rowIndex).setArtist((String)aValue);
+                return;
+            case 2://Album
+                data.get(rowIndex).setAlbum((String)aValue);
+                return;
+            case 3://Length
+                data.get(rowIndex).setLength((int)aValue);
+                return;
+            case 4://Year
+                data.get(rowIndex).setYear((int)aValue);
+        }
+    }
+
+    @Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return true;//Make cells editable
+    }
+    
+    
     
 }

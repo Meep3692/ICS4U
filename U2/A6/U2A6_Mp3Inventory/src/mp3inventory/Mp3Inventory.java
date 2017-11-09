@@ -5,8 +5,11 @@
  */
 package mp3inventory;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 /**
- *
+ * Main entry point and gui
  * @author Darian
  */
 public class Mp3Inventory extends javax.swing.JFrame {
@@ -19,6 +22,22 @@ public class Mp3Inventory extends javax.swing.JFrame {
     public Mp3Inventory() {
         tableModel = new Mp3TableModel();
         initComponents();
+        //Handle mouse clicks on header for sorting
+        songListTable.getTableHeader().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int col = songListTable.columnAtPoint(e.getPoint());//Get column from mouse position
+                col++;//Add 1 bc sorting columns are 1 more for inverse sorting (no -0)
+                if(tableModel.getSortingMethod() == col)
+                    col *= -1;//Invert for inverse sorting if we're sorting by that column
+                tableModel.sortBy(col);//Sort by this column
+                
+                songListTable.invalidate();//Stuff for repainting
+                songListTable.validate();
+                songListTable.repaint();//Repaint table so new entry shows
+            }
+            
+        });
     }
 
     /**
@@ -44,6 +63,8 @@ public class Mp3Inventory extends javax.swing.JFrame {
         addSongAlbumField = new javax.swing.JTextField();
         addSongLengthLabel = new javax.swing.JLabel();
         addSongLengthField = new javax.swing.JTextField();
+        addSongYearLabel = new javax.swing.JLabel();
+        addSongYearField = new javax.swing.JTextField();
         addSongButtonsPanel = new javax.swing.JPanel();
         addSongAddButton = new javax.swing.JButton();
 
@@ -53,7 +74,7 @@ public class Mp3Inventory extends javax.swing.JFrame {
         songListTable.setModel(tableModel);
         songListScrollPane.setViewportView(songListTable);
 
-        tabbedPane.addTab("tab3", songListScrollPane);
+        tabbedPane.addTab("Songs", songListScrollPane);
 
         addSongPanel.setLayout(new java.awt.BorderLayout());
 
@@ -63,45 +84,69 @@ public class Mp3Inventory extends javax.swing.JFrame {
 
         addSongTitleLabel.setText("Title: ");
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         addSongInputsPanel.add(addSongTitleLabel, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         addSongInputsPanel.add(addSongTitleField, gridBagConstraints);
 
         addSongArtistLabel.setText("Artist:");
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         addSongInputsPanel.add(addSongArtistLabel, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         addSongInputsPanel.add(addSongArtistField, gridBagConstraints);
 
         addSongAlbumLabel.setText("Album:");
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         addSongInputsPanel.add(addSongAlbumLabel, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         addSongInputsPanel.add(addSongAlbumField, gridBagConstraints);
 
         addSongLengthLabel.setText("Length:");
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
         addSongInputsPanel.add(addSongLengthLabel, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         addSongInputsPanel.add(addSongLengthField, gridBagConstraints);
+
+        addSongYearLabel.setText("Year:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        addSongInputsPanel.add(addSongYearLabel, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        addSongInputsPanel.add(addSongYearField, gridBagConstraints);
 
         addSongPanel.add(addSongInputsPanel, java.awt.BorderLayout.CENTER);
 
         addSongButtonsPanel.setLayout(new java.awt.GridBagLayout());
 
         addSongAddButton.setText("Add");
+        addSongAddButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addSongAddButtonActionPerformed(evt);
+            }
+        });
         addSongButtonsPanel.add(addSongAddButton, new java.awt.GridBagConstraints());
 
         addSongPanel.add(addSongButtonsPanel, java.awt.BorderLayout.PAGE_END);
@@ -112,6 +157,44 @@ public class Mp3Inventory extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void addSongAddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSongAddButtonActionPerformed
+        String title, artist, album;//Vars to store mp3 info
+        int length, year;
+        //Get title artist and album from fields
+        title = addSongTitleField.getText();
+        artist = addSongArtistField.getText();
+        album = addSongAlbumField.getText();
+        //Try to parse the length or default to -1
+        try{
+            length = Integer.parseInt(addSongLengthField.getText());
+        }catch(NumberFormatException e){
+            //Length field isn't a number, -1
+            length = -1;
+        }
+        //Try to parse the year field or default to -1
+        try{
+            year = Integer.parseInt(addSongYearField.getText());
+        }catch(NumberFormatException e){
+            //Year field isn't a number, -1
+            year = -1;
+        }
+        //Create the mp3
+        Mp3 mp3 = new Mp3(title, artist, album, length, year);
+        //Add to the table model
+        tableModel.addSong(mp3);
+        
+        songListTable.invalidate();//Stuff for repainting
+        songListTable.validate();
+        songListTable.repaint();//Repaint table so new entry shows
+        
+        //Clear inputs
+        addSongTitleField.setText("");
+        addSongArtistField.setText("");
+        addSongAlbumField.setText("");
+        addSongLengthField.setText("");
+        addSongYearField.setText("");
+    }//GEN-LAST:event_addSongAddButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -161,6 +244,8 @@ public class Mp3Inventory extends javax.swing.JFrame {
     private javax.swing.JPanel addSongPanel;
     private javax.swing.JTextField addSongTitleField;
     private javax.swing.JLabel addSongTitleLabel;
+    private javax.swing.JTextField addSongYearField;
+    private javax.swing.JLabel addSongYearLabel;
     private javax.swing.JScrollPane songListScrollPane;
     private javax.swing.JTable songListTable;
     private javax.swing.JTabbedPane tabbedPane;
