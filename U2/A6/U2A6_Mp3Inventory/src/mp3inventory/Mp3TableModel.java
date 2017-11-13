@@ -33,6 +33,39 @@ public class Mp3TableModel extends AbstractTableModel {
     }
     
     /**
+     * Remove song from songs list
+     * @param mp3 Mp3 to remove from list
+     */
+    public void removeSong(Mp3 mp3){
+        data.remove(mp3);
+        sortBy(sorting);
+    }
+    
+    /**
+     * Clear all songs from list
+     */
+    public void clearSongs(){
+        data.clear();
+    }
+    
+    /**
+     * Get song at specified index
+     * @param index Row index of song
+     * @return Mp3 of song
+     */
+    public Mp3 getSongAtIndex(int index){
+        return data.get(index);
+    }
+    
+    /**
+     * Get a list with all songs in this table
+     * @return List of all mp3s in this table
+     */
+    public List<Mp3> getList(){
+        return data;
+    }
+    
+    /**
      * Sort by a specific column
      * @param column Index of column, negative for inverse sorting
      */

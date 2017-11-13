@@ -7,6 +7,7 @@ package mp3inventory;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 /**
  * Main entry point and gui
@@ -14,14 +15,19 @@ import java.awt.event.MouseEvent;
  */
 public class Mp3Inventory extends javax.swing.JFrame {
 
-    private Mp3TableModel tableModel;
+    private Mp3TableModel tableModel;//Model for song list table
+    private Mp3TableModel searchTableModel;//Model for search list table
     
     /**
      * Creates new form Mp3Inventory
      */
     public Mp3Inventory() {
+        //Initialise table models
         tableModel = new Mp3TableModel();
+        searchTableModel = new Mp3TableModel();
+        
         initComponents();
+        
         //Handle mouse clicks on header for sorting
         songListTable.getTableHeader().addMouseListener(new MouseAdapter() {
             @Override
@@ -51,6 +57,9 @@ public class Mp3Inventory extends javax.swing.JFrame {
         java.awt.GridBagConstraints gridBagConstraints;
 
         tabbedPane = new javax.swing.JTabbedPane();
+        songsListPanel = new javax.swing.JPanel();
+        songsListControlsPanel = new javax.swing.JPanel();
+        removeSongButton = new javax.swing.JButton();
         songListScrollPane = new javax.swing.JScrollPane();
         songListTable = new javax.swing.JTable();
         addSongPanel = new javax.swing.JPanel();
@@ -67,14 +76,37 @@ public class Mp3Inventory extends javax.swing.JFrame {
         addSongYearField = new javax.swing.JTextField();
         addSongButtonsPanel = new javax.swing.JPanel();
         addSongAddButton = new javax.swing.JButton();
+        searchPanel = new javax.swing.JPanel();
+        searchControlsPanel = new javax.swing.JPanel();
+        searchTypeComboBox = new javax.swing.JComboBox<>();
+        searchField = new javax.swing.JTextField();
+        searchButton = new javax.swing.JButton();
+        searchTableScrollPane = new javax.swing.JScrollPane();
+        searchTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Mp3 Inventory");
 
+        songsListPanel.setLayout(new java.awt.BorderLayout());
+
+        songsListControlsPanel.setLayout(new java.awt.GridBagLayout());
+
+        removeSongButton.setText("Remove");
+        removeSongButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeSongButtonActionPerformed(evt);
+            }
+        });
+        songsListControlsPanel.add(removeSongButton, new java.awt.GridBagConstraints());
+
+        songsListPanel.add(songsListControlsPanel, java.awt.BorderLayout.PAGE_START);
+
         songListTable.setModel(tableModel);
         songListScrollPane.setViewportView(songListTable);
 
-        tabbedPane.addTab("Songs", songListScrollPane);
+        songsListPanel.add(songListScrollPane, java.awt.BorderLayout.CENTER);
+
+        tabbedPane.addTab("Songs", songsListPanel);
 
         addSongPanel.setLayout(new java.awt.BorderLayout());
 
@@ -153,6 +185,31 @@ public class Mp3Inventory extends javax.swing.JFrame {
 
         tabbedPane.addTab("Add Song", addSongPanel);
 
+        searchPanel.setLayout(new java.awt.BorderLayout());
+
+        searchControlsPanel.setLayout(new java.awt.BorderLayout());
+
+        searchTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Title", "Artist", "Album", "Year", "Length" }));
+        searchControlsPanel.add(searchTypeComboBox, java.awt.BorderLayout.LINE_START);
+        searchControlsPanel.add(searchField, java.awt.BorderLayout.CENTER);
+
+        searchButton.setText("Search");
+        searchButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchButtonActionPerformed(evt);
+            }
+        });
+        searchControlsPanel.add(searchButton, java.awt.BorderLayout.LINE_END);
+
+        searchPanel.add(searchControlsPanel, java.awt.BorderLayout.PAGE_START);
+
+        searchTable.setModel(searchTableModel);
+        searchTableScrollPane.setViewportView(searchTable);
+
+        searchPanel.add(searchTableScrollPane, java.awt.BorderLayout.CENTER);
+
+        tabbedPane.addTab("Search", searchPanel);
+
         getContentPane().add(tabbedPane, java.awt.BorderLayout.CENTER);
 
         pack();
@@ -195,6 +252,61 @@ public class Mp3Inventory extends javax.swing.JFrame {
         addSongLengthField.setText("");
         addSongYearField.setText("");
     }//GEN-LAST:event_addSongAddButtonActionPerformed
+
+    private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
+        //searchTableModel = new Mp3TableModel();//Reset search table
+        searchTableModel.clearSongs();
+        List<Mp3> allMp3s = tableModel.getList();//Get mp3s from main model
+        String searchText = searchField.getText();//Get search query
+        for (Mp3 mp3 : allMp3s) {
+            //It would be more efficient to put loops in each case but this looks neater
+            switch (searchTypeComboBox.getSelectedIndex()) {
+                case 0:
+                    //Title
+                    if (mp3.getTitle().contains(searchText)) {//Use .contains to be more fuzzy
+                        searchTableModel.addSong(mp3);//Add to search results table
+                    }
+                    break;
+                case 1:
+                    //Artist
+                    if (mp3.getArtist().contains(searchText)) {
+                        searchTableModel.addSong(mp3);
+                    }
+                    break;
+                case 2:
+                    //Album
+                    if (mp3.getAlbum().contains(searchText)) {
+                        searchTableModel.addSong(mp3);
+                    }
+                    break;
+                case 3:
+                    //Length
+                    if (mp3.getLength() == Integer.parseInt(searchText)) {
+                        searchTableModel.addSong(mp3);
+                    }
+                    break;
+                case 4:
+                    //Length
+                    if (mp3.getYear() == Integer.parseInt(searchText)) {
+                        searchTableModel.addSong(mp3);
+                    }
+                    break;
+            }
+        }
+        //This should work but it doesn't for no reason and there's nothing I can do about it
+        searchTable.invalidate();//Stuff for repainting
+        searchTable.validate();
+        searchTable.repaint();//Repaint table so new entry shows
+    }//GEN-LAST:event_searchButtonActionPerformed
+
+    private void removeSongButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeSongButtonActionPerformed
+        int index = songListTable.getSelectedRow();//Get selected row
+        tableModel.removeSong(tableModel.getSongAtIndex(index));//Remove song at selected row
+        
+        songListTable.invalidate();//Stuff for repainting
+        songListTable.validate();
+        songListTable.repaint();//Repaint table so new entry shows
+    }//GEN-LAST:event_removeSongButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -246,8 +358,18 @@ public class Mp3Inventory extends javax.swing.JFrame {
     private javax.swing.JLabel addSongTitleLabel;
     private javax.swing.JTextField addSongYearField;
     private javax.swing.JLabel addSongYearLabel;
+    private javax.swing.JButton removeSongButton;
+    private javax.swing.JButton searchButton;
+    private javax.swing.JPanel searchControlsPanel;
+    private javax.swing.JTextField searchField;
+    private javax.swing.JPanel searchPanel;
+    private javax.swing.JTable searchTable;
+    private javax.swing.JScrollPane searchTableScrollPane;
+    private javax.swing.JComboBox<String> searchTypeComboBox;
     private javax.swing.JScrollPane songListScrollPane;
     private javax.swing.JTable songListTable;
+    private javax.swing.JPanel songsListControlsPanel;
+    private javax.swing.JPanel songsListPanel;
     private javax.swing.JTabbedPane tabbedPane;
     // End of variables declaration//GEN-END:variables
 }
