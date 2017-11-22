@@ -42,6 +42,11 @@ public class HockeyTeams extends javax.swing.JFrame {
         filterGrade11CheckBox = new javax.swing.JCheckBox();
         filterGrade12CheckBox = new javax.swing.JCheckBox();
         filterGrade13CheckBox = new javax.swing.JCheckBox();
+        filterPositionCheckBox = new javax.swing.JLabel();
+        filterPositionFCheckBox = new javax.swing.JCheckBox();
+        filterPositionDCheckBox = new javax.swing.JCheckBox();
+        filterPositionGCheckBox = new javax.swing.JCheckBox();
+        addPlayerButton = new javax.swing.JButton();
         playersTableScrollPane = new javax.swing.JScrollPane();
         playersTable = new javax.swing.JTable();
 
@@ -53,62 +58,102 @@ public class HockeyTeams extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridwidth = 3;
         controlsPanel.add(filtersLabel, gridBagConstraints);
 
         filterTeamLabel.setText("Team");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 2);
         controlsPanel.add(filterTeamLabel, gridBagConstraints);
 
         filterTeamGirlsCheckBox.setText("Girls");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 2);
         controlsPanel.add(filterTeamGirlsCheckBox, gridBagConstraints);
 
         filterTeamBoysCheckBox.setText("Boys");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 2);
         controlsPanel.add(filterTeamBoysCheckBox, gridBagConstraints);
 
         filterGradeLabel.setText("Grade");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 2);
         controlsPanel.add(filterGradeLabel, gridBagConstraints);
 
         filterGrade9CheckBox.setText("9");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
+        gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 2);
         controlsPanel.add(filterGrade9CheckBox, gridBagConstraints);
 
         filterGrade10CheckBox.setText("10");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
+        gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 2);
         controlsPanel.add(filterGrade10CheckBox, gridBagConstraints);
 
         filterGrade11CheckBox.setText("11");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
+        gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 2);
         controlsPanel.add(filterGrade11CheckBox, gridBagConstraints);
 
         filterGrade12CheckBox.setText("12");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 5;
+        gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 2);
         controlsPanel.add(filterGrade12CheckBox, gridBagConstraints);
 
         filterGrade13CheckBox.setText("13");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 6;
+        gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 2);
         controlsPanel.add(filterGrade13CheckBox, gridBagConstraints);
+
+        filterPositionCheckBox.setText("Position");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 2);
+        controlsPanel.add(filterPositionCheckBox, gridBagConstraints);
+
+        filterPositionFCheckBox.setText("F");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 2);
+        controlsPanel.add(filterPositionFCheckBox, gridBagConstraints);
+
+        filterPositionDCheckBox.setText("D");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 2);
+        controlsPanel.add(filterPositionDCheckBox, gridBagConstraints);
+
+        filterPositionGCheckBox.setText("G");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 2);
+        controlsPanel.add(filterPositionGCheckBox, gridBagConstraints);
+
+        addPlayerButton.setText("Add Player");
+        controlsPanel.add(addPlayerButton, new java.awt.GridBagConstraints());
 
         getContentPane().add(controlsPanel, java.awt.BorderLayout.PAGE_START);
 
@@ -156,6 +201,7 @@ public class HockeyTeams extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addPlayerButton;
     private javax.swing.JPanel controlsPanel;
     private javax.swing.JCheckBox filterGrade10CheckBox;
     private javax.swing.JCheckBox filterGrade11CheckBox;
@@ -163,6 +209,10 @@ public class HockeyTeams extends javax.swing.JFrame {
     private javax.swing.JCheckBox filterGrade13CheckBox;
     private javax.swing.JCheckBox filterGrade9CheckBox;
     private javax.swing.JLabel filterGradeLabel;
+    private javax.swing.JLabel filterPositionCheckBox;
+    private javax.swing.JCheckBox filterPositionDCheckBox;
+    private javax.swing.JCheckBox filterPositionFCheckBox;
+    private javax.swing.JCheckBox filterPositionGCheckBox;
     private javax.swing.JCheckBox filterTeamBoysCheckBox;
     private javax.swing.JCheckBox filterTeamGirlsCheckBox;
     private javax.swing.JLabel filterTeamLabel;
