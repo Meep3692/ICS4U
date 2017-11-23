@@ -18,6 +18,14 @@ public class HockeyTeams extends javax.swing.JFrame {
      */
     public HockeyTeams() {
         tableModel = new TeamTableModel();
+        tableModel.setGradeFilter(9, true);
+        tableModel.setGradeFilter(10, true);
+        tableModel.setGradeFilter(11, true);
+        tableModel.setGradeFilter(12, true);
+        tableModel.setGradeFilter(13, true);
+        tableModel.setTeamFilter(Team.Boys, true);
+        tableModel.setTeamFilter(Team.Girls, true);
+        tableModel.setPositionFilter(Position.D, true);//WORK HERE
         initComponents();
     }
 
@@ -153,6 +161,11 @@ public class HockeyTeams extends javax.swing.JFrame {
         controlsPanel.add(filterPositionGCheckBox, gridBagConstraints);
 
         addPlayerButton.setText("Add Player");
+        addPlayerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addPlayerButtonActionPerformed(evt);
+            }
+        });
         controlsPanel.add(addPlayerButton, new java.awt.GridBagConstraints());
 
         getContentPane().add(controlsPanel, java.awt.BorderLayout.PAGE_START);
@@ -164,6 +177,11 @@ public class HockeyTeams extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void addPlayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPlayerButtonActionPerformed
+        HockeyPlayer newPlayer = new AddPlayerDialog(this, true).showDialog();
+        tableModel.addPlayer(newPlayer);
+    }//GEN-LAST:event_addPlayerButtonActionPerformed
 
     /**
      * @param args the command line arguments

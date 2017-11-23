@@ -6,18 +6,48 @@
 package hockeyteams;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 /**
  *
  * @author Darian
  */
 public class AddPlayerDialog extends javax.swing.JDialog {
 
+    private HockeyPlayer player;
+    
+    //Moved all the control declarations up here so I could edit 2 of them
+    private javax.swing.JButton confirmButton;
+    private javax.swing.JPanel entryPanel;
+    private javax.swing.JTextField firstNameField;
+    private javax.swing.JLabel firstNameLabel;
+    private javax.swing.JTextField gradeField;
+    private javax.swing.JLabel gradeLabel;
+    private javax.swing.JTextField lastNameField;
+    private javax.swing.JLabel lastNameLabel;
+    private javax.swing.JTextField number1Field;
+    private javax.swing.JTextField number2Field;
+    private javax.swing.JTextField number3Field;
+    private javax.swing.JLabel numbersLabel;
+    private javax.swing.JComboBox<Position> positionComboBox;//These combo boxes are usually strings
+    private javax.swing.JLabel positionLabel;
+    private javax.swing.JComboBox<Team> teamComboBox;//I needed to change the type
+    private javax.swing.JLabel teamLabel;
+    
     /**
      * Creates new form AddPlayerDialog
      */
     public AddPlayerDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+    }
+    
+    /**
+     * Show this dialog
+     * @return Player as entered in this dialog
+     */
+    public HockeyPlayer showDialog(){
+        setVisible(true);//Show the dialog and wait for it to close
+        return player;//Return the player that will be setup before closing
     }
 
     /**
@@ -30,6 +60,7 @@ public class AddPlayerDialog extends javax.swing.JDialog {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
+        entryPanel = new javax.swing.JPanel();
         lastNameLabel = new javax.swing.JLabel();
         lastNameField = new javax.swing.JTextField();
         firstNameLabel = new javax.swing.JLabel();
@@ -40,74 +71,160 @@ public class AddPlayerDialog extends javax.swing.JDialog {
         gradeField = new javax.swing.JTextField();
         positionLabel = new javax.swing.JLabel();
         positionComboBox = new javax.swing.JComboBox<>();
+        numbersLabel = new javax.swing.JLabel();
+        number1Field = new javax.swing.JTextField();
+        number2Field = new javax.swing.JTextField();
+        number3Field = new javax.swing.JTextField();
+        confirmButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        java.awt.GridBagLayout layout = new java.awt.GridBagLayout();
-        layout.columnWidths = new int[] {0, 100};
-        getContentPane().setLayout(layout);
+
+        java.awt.GridBagLayout jPanel1Layout = new java.awt.GridBagLayout();
+        jPanel1Layout.columnWidths = new int[] {0, 100};
+        entryPanel.setLayout(jPanel1Layout);
 
         lastNameLabel.setText("Last Name");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        getContentPane().add(lastNameLabel, gridBagConstraints);
+        entryPanel.add(lastNameLabel, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        getContentPane().add(lastNameField, gridBagConstraints);
+        entryPanel.add(lastNameField, gridBagConstraints);
 
         firstNameLabel.setText("First Name");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        getContentPane().add(firstNameLabel, gridBagConstraints);
+        entryPanel.add(firstNameLabel, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        getContentPane().add(firstNameField, gridBagConstraints);
+        entryPanel.add(firstNameField, gridBagConstraints);
 
         teamLabel.setText("Team");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        getContentPane().add(teamLabel, gridBagConstraints);
+        entryPanel.add(teamLabel, gridBagConstraints);
 
         teamComboBox.setModel(new DefaultComboBoxModel<Team>(Team.values()));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        getContentPane().add(teamComboBox, gridBagConstraints);
+        entryPanel.add(teamComboBox, gridBagConstraints);
 
         gradeLabel.setText("Grade");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        getContentPane().add(gradeLabel, gridBagConstraints);
+        entryPanel.add(gradeLabel, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        getContentPane().add(gradeField, gridBagConstraints);
+        entryPanel.add(gradeField, gridBagConstraints);
 
-        positionLabel.setText("Team");
+        positionLabel.setText("Position");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        getContentPane().add(positionLabel, gridBagConstraints);
+        entryPanel.add(positionLabel, gridBagConstraints);
 
         positionComboBox.setModel(new DefaultComboBoxModel<Position>(Position.values()));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        getContentPane().add(positionComboBox, gridBagConstraints);
+        entryPanel.add(positionComboBox, gridBagConstraints);
+
+        numbersLabel.setText("Number Preferences");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridheight = 3;
+        entryPanel.add(numbersLabel, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        entryPanel.add(number1Field, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        entryPanel.add(number2Field, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        entryPanel.add(number3Field, gridBagConstraints);
+
+        getContentPane().add(entryPanel, java.awt.BorderLayout.CENTER);
+
+        confirmButton.setText("Add");
+        confirmButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                confirmButtonActionPerformed(evt);
+            }
+        });
+        getContentPane().add(confirmButton, java.awt.BorderLayout.PAGE_END);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmButtonActionPerformed
+        //Declaring variables
+        String lastName, firstName;
+        int grade;
+        Team team;
+        Position position;
+        int[] numbers = new int[3];//Empty int array of length 3. It will always be 3 long
+        
+        //Name is easy, just get text from fields
+        lastName = lastNameField.getText();
+        firstName = firstNameField.getText();
+        
+        //Team and position just require casting
+        team = (Team)teamComboBox.getSelectedItem();//We know the type is right because of the editing of the declaration
+        position = (Position)positionComboBox.getSelectedItem();
+        
+        //The trick bit where things can go wrong
+        try{
+            grade = Integer.parseInt(gradeField.getText());//Try to parse the input
+            if(grade < 9 || grade > 13)//Not in valid grade range
+                throw new Exception("Grade out of range");//Just to break into the error handler
+            
+            //Try to parse numbers from numbers fields
+            numbers[0] = Integer.parseInt(number1Field.getText());
+            numbers[1] = Integer.parseInt(number2Field.getText());
+            numbers[2] = Integer.parseInt(number3Field.getText());
+            
+            if( numbers[0] < 0 || numbers[0] > 99 ||
+                numbers[1] < 0 || numbers[1] > 99 ||//One of the numbers is out of range
+                numbers[2] < 0 || numbers[2] > 99 )
+                throw new Exception("Number preference out of range");//Break into error handler
+            
+            //Create the player
+            player = new HockeyPlayer(lastName, firstName, team, grade, position, numbers);
+            
+            //Close the window (and thus return the value)
+            setVisible(false);
+            dispose();
+            
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+        
+    }//GEN-LAST:event_confirmButtonActionPerformed
+/** This sneakily comments out all the declarations so we can move them
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton confirmButton;
+    private javax.swing.JPanel entryPanel;
     private javax.swing.JTextField firstNameField;
     private javax.swing.JLabel firstNameLabel;
     private javax.swing.JTextField gradeField;
     private javax.swing.JLabel gradeLabel;
     private javax.swing.JTextField lastNameField;
     private javax.swing.JLabel lastNameLabel;
-    private javax.swing.JComboBox<Position> positionComboBox;
+    private javax.swing.JTextField number1Field;
+    private javax.swing.JTextField number2Field;
+    private javax.swing.JTextField number3Field;
+    private javax.swing.JLabel numbersLabel;
+    private javax.swing.JComboBox<String> positionComboBox;
     private javax.swing.JLabel positionLabel;
-    private javax.swing.JComboBox<Team> teamComboBox;
+    private javax.swing.JComboBox<String> teamComboBox;
     private javax.swing.JLabel teamLabel;
     // End of variables declaration//GEN-END:variables
+*/
 }

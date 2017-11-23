@@ -6,7 +6,9 @@
 package hockeyteams;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
@@ -16,12 +18,55 @@ import javax.swing.table.TableModel;
  */
 public class TeamTableModel implements TableModel {
 
+    //List to store all players
     private List<HockeyPlayer> players;
+    //List to store only the players that should be displayed
     private List<HockeyPlayer> displayList;
     
+    //Arrays and maps for filters
+    private boolean[] gradeFilter;
+    private Map<Team, Boolean> teamFilter;
+    private Map<Position, Boolean> positionFilter;
+    
     public TeamTableModel(){
+        //Initialise all the variables
         players = new ArrayList<>();
         displayList = new ArrayList<>();
+        gradeFilter = new boolean[5];
+        teamFilter = new HashMap<>();
+        positionFilter = new HashMap<>();
+    }
+    
+    private void refreshDisplay(){
+        displayList.clear();//Empty display list
+        for(HockeyPlayer player : players){
+            if(gradeFilter[player.getGrade() - 9] &&//Test if grade should be shown
+                    teamFilter.get(player.getTeam()) &&//And test if team should be shown
+                    positionFilter.get(player.getPosition())){//And test if position should be shown
+                displayList.add(player);//Add player to display list
+            }
+        }
+    }
+    
+    public void setGradeFilter(int grade, boolean show){
+        //Subtract 9 to get index in array from grade
+        //(9 -> 0, 10 -> 1,...)
+        gradeFilter[grade - 9] = show;
+    }
+    
+    public void setTeamFilter(Team team, boolean show){
+        //Just set the value in the map to the one specified
+        teamFilter.put(team, show);
+    }
+    
+    public void setPositionFilter(Position position, boolean show){
+        //Same as team filter
+        positionFilter.put(position, show);
+    }
+    
+    public void addPlayer(HockeyPlayer player){
+        players.add(player);
+        refreshDisplay();
     }
     
     @Override
