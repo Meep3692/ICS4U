@@ -9,14 +9,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
 /**
  *
  * @author Darian
  */
-public class TeamTableModel implements TableModel {
+public class TeamTableModel extends AbstractTableModel implements TableModel {
 
     //List to store all players
     private List<HockeyPlayer> players;
@@ -40,8 +43,8 @@ public class TeamTableModel implements TableModel {
     private void refreshDisplay(){
         displayList.clear();//Empty display list
         for(HockeyPlayer player : players){
-            if(gradeFilter[player.getGrade() - 9] &&//Test if grade should be shown
-                    teamFilter.get(player.getTeam()) &&//And test if team should be shown
+            if(gradeFilter[player.getGrade() - 9] ||//Test if grade should be shown
+                    teamFilter.get(player.getTeam()) ||//And test if team should be shown
                     positionFilter.get(player.getPosition())){//And test if position should be shown
                 displayList.add(player);//Add player to display list
             }
@@ -52,21 +55,40 @@ public class TeamTableModel implements TableModel {
         //Subtract 9 to get index in array from grade
         //(9 -> 0, 10 -> 1,...)
         gradeFilter[grade - 9] = show;
+        refreshDisplay();
     }
     
     public void setTeamFilter(Team team, boolean show){
         //Just set the value in the map to the one specified
         teamFilter.put(team, show);
+        refreshDisplay();
     }
     
     public void setPositionFilter(Position position, boolean show){
         //Same as team filter
         positionFilter.put(position, show);
+        refreshDisplay();
     }
     
     public void addPlayer(HockeyPlayer player){
+        //Make sure there are no duplicates
+        for(HockeyPlayer exsistingPlayer : players){
+            if(exsistingPlayer.getFirstName().equals(player.getFirstName()) && exsistingPlayer.getLastName().equals(player.getLastName())){
+                JOptionPane.showMessageDialog(new JFrame(), "Player already exists");
+                return;
+            }
+        }
         players.add(player);
         refreshDisplay();
+    }
+    
+    public void removePlayer(HockeyPlayer player){
+        players.remove(player);
+        refreshDisplay();
+    }
+    
+    public HockeyPlayer getPlayerAtRow(int rowIndex){
+        return displayList.get(rowIndex);
     }
     
     @Override
@@ -104,12 +126,28 @@ public class TeamTableModel implements TableModel {
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        return String.class;//For now, they're all strings. Will probably change this
+        switch(columnIndex){
+            case 0:
+            case 1:
+                return String.class;
+            case 2:
+                return Team.class;
+            case 3:
+                return Integer.class;
+            case 4:
+                return Position.class;
+            case 5:
+                return int[].class;
+            case 6:
+                return List.class;
+            default:
+                return String.class;//This shouldn't happen
+        }
     }
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return false;//don't allow editing for now. Will change this with column classes
+        return true;//don't allow editing for now. Will change this with column classes
     }
 
     @Override
@@ -126,9 +164,9 @@ public class TeamTableModel implements TableModel {
             case 4:
                 return displayList.get(rowIndex).getPosition();
             case 5:
-                return displayList.get(rowIndex).getNumberPreference(0);
+                return displayList.get(rowIndex).getNumberPreferences();
             case 6:
-                return displayList.get(rowIndex).getNicknames().get(0);
+                return displayList.get(rowIndex).getNicknames();
             default://This is for columns that can't exist in this table
                 return "This shouldn't happen";
         }
@@ -136,17 +174,33 @@ public class TeamTableModel implements TableModel {
 
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        
-    }
-
-    @Override
-    public void addTableModelListener(TableModelListener l) {
-        
-    }
-
-    @Override
-    public void removeTableModelListener(TableModelListener l) {
-        
+        try{
+            switch(columnIndex){
+                case 0:
+                    displayList.get(rowIndex).setLastName((String)aValue);
+                    break;
+                case 1:
+                    displayList.get(rowIndex).setFirstName((String)aValue);
+                    break;
+                case 2:
+                    displayList.get(rowIndex).setTeam((Team)aValue);
+                    break;
+                case 3:
+                    displayList.get(rowIndex).setGrade((int)aValue);
+                    break;
+                case 4:
+                    displayList.get(rowIndex).setPosition((Position)aValue);
+                    break;
+                case 5:
+                    displayList.get(rowIndex).setNumberPreferences((int[])aValue);
+                    break;
+                case 6:
+                    displayList.get(rowIndex).setNicknames((List<String>)aValue);
+                    break;
+        }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(new JFrame(), e.getMessage());
+        }
     }
     
 }

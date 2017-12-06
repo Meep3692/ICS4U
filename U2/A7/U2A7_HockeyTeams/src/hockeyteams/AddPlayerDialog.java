@@ -5,7 +5,10 @@
  */
 package hockeyteams;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 /**
  *
@@ -14,6 +17,7 @@ import javax.swing.JOptionPane;
 public class AddPlayerDialog extends javax.swing.JDialog {
 
     private HockeyPlayer player;
+    private List<String> nicknames;
     
     //Moved all the control declarations up here so I could edit 2 of them
     private javax.swing.JButton confirmButton;
@@ -24,6 +28,7 @@ public class AddPlayerDialog extends javax.swing.JDialog {
     private javax.swing.JLabel gradeLabel;
     private javax.swing.JTextField lastNameField;
     private javax.swing.JLabel lastNameLabel;
+    private javax.swing.JButton nicknamesButton;
     private javax.swing.JTextField number1Field;
     private javax.swing.JTextField number2Field;
     private javax.swing.JTextField number3Field;
@@ -39,6 +44,7 @@ public class AddPlayerDialog extends javax.swing.JDialog {
     public AddPlayerDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        nicknames = new ArrayList<>();//Initialise nicknames list
     }
     
     /**
@@ -75,6 +81,7 @@ public class AddPlayerDialog extends javax.swing.JDialog {
         number1Field = new javax.swing.JTextField();
         number2Field = new javax.swing.JTextField();
         number3Field = new javax.swing.JTextField();
+        nicknamesButton = new javax.swing.JButton();
         confirmButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -150,6 +157,17 @@ public class AddPlayerDialog extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         entryPanel.add(number3Field, gridBagConstraints);
 
+        nicknamesButton.setText("Nicknames");
+        nicknamesButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nicknamesButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridwidth = 2;
+        entryPanel.add(nicknamesButton, gridBagConstraints);
+
         getContentPane().add(entryPanel, java.awt.BorderLayout.CENTER);
 
         confirmButton.setText("Add");
@@ -182,31 +200,32 @@ public class AddPlayerDialog extends javax.swing.JDialog {
         //The trick bit where things can go wrong
         try{
             grade = Integer.parseInt(gradeField.getText());//Try to parse the input
-            if(grade < 9 || grade > 13)//Not in valid grade range
-                throw new Exception("Grade out of range");//Just to break into the error handler
             
             //Try to parse numbers from numbers fields
             numbers[0] = Integer.parseInt(number1Field.getText());
             numbers[1] = Integer.parseInt(number2Field.getText());
             numbers[2] = Integer.parseInt(number3Field.getText());
             
-            if( numbers[0] < 0 || numbers[0] > 99 ||
-                numbers[1] < 0 || numbers[1] > 99 ||//One of the numbers is out of range
-                numbers[2] < 0 || numbers[2] > 99 )
-                throw new Exception("Number preference out of range");//Break into error handler
-            
             //Create the player
             player = new HockeyPlayer(lastName, firstName, team, grade, position, numbers);
+            
+            //Set nicknames
+            player.setNicknames(nicknames);
             
             //Close the window (and thus return the value)
             setVisible(false);
             dispose();
             
-        }catch(Exception e){
+        }catch(Exception e){//Catch any possible problems
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
         
     }//GEN-LAST:event_confirmButtonActionPerformed
+
+    private void nicknamesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nicknamesButtonActionPerformed
+        //Use StringListEditorDialog to get string list
+        nicknames = new StringListEditorDialog(new JFrame(), nicknames).showDialog();
+    }//GEN-LAST:event_nicknamesButtonActionPerformed
 /** This sneakily comments out all the declarations so we can move them
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton confirmButton;
@@ -217,6 +236,7 @@ public class AddPlayerDialog extends javax.swing.JDialog {
     private javax.swing.JLabel gradeLabel;
     private javax.swing.JTextField lastNameField;
     private javax.swing.JLabel lastNameLabel;
+    private javax.swing.JButton nicknamesButton;
     private javax.swing.JTextField number1Field;
     private javax.swing.JTextField number2Field;
     private javax.swing.JTextField number3Field;

@@ -23,12 +23,34 @@ public class HockeyPlayer {
     private List<String> nicknames;
 
     public HockeyPlayer(String lastName, String firstName, Team team, int grade, Position position, int[] numberPreference) {
+        //Sanity check on last name, cannot be blank
+        if(lastName.equals(""))
+            throw new IllegalArgumentException("Last name can not be blank!");
         this.lastName = lastName;
+        
+        //Sanity check on first name, cannot be blank
+        if(firstName.equals(""))
+            throw new IllegalArgumentException("First name can not be blank!");
         this.firstName = firstName;
+        
         this.team = team;
+        
+        //Sanity check on grade
+        if(grade < 9 || grade > 13)
+            throw new IllegalArgumentException("Grade must be between 9 and 13 inclusive!");
         this.grade = grade;
+        
         this.position = position;
+        
+        //Sanity checks on preferences
+        if(numberPreference.length > 3)
+            throw new IllegalArgumentException("Players must only have 3 number preferences");
+        for(int preference : numberPreference){
+            if(preference < 0 || preference > 99)
+                throw new IllegalArgumentException("Number preferences must be between 0 and 99 inclusive!");
+        }
         this.numberPreference = numberPreference;
+        
         nicknames = new ArrayList<>();
     }
 
@@ -45,6 +67,9 @@ public class HockeyPlayer {
      * @param lastName New last name
      */
     public void setLastName(String lastName) {
+        //Sanity check on last name, cannot be blank
+        if(lastName.equals(""))
+            throw new IllegalArgumentException("Last name can not be blank!");
         this.lastName = lastName;
     }
 
@@ -61,6 +86,9 @@ public class HockeyPlayer {
      * @param firstName New first name
      */
     public void setFirstName(String firstName) {
+        //Sanity check on first name, cannot be blank
+        if(firstName.equals(""))
+            throw new IllegalArgumentException("First name can not be blank!");
         this.firstName = firstName;
     }
 
@@ -93,6 +121,8 @@ public class HockeyPlayer {
      * @param grade Player's new grade (American version [9-12] not year of high school)
      */
     public void setGrade(int grade) {
+        if(grade < 9 || grade > 13)
+            throw new IllegalArgumentException("Grade must be between 9 and 13 inclusive!");
         this.grade = grade;
     }
 
@@ -122,12 +152,38 @@ public class HockeyPlayer {
     }
     
     /**
+     * Get number preferences
+     * @return Array of preference, ordered from most to least preferred
+     */
+    public int[] getNumberPreferences(){
+        return numberPreference;
+    }
+    
+    /**
      * Set player number preference
      * @param preference Number ranking (0, 1, or 2)
      * @param value New number for that ranking
      */
     public void setNumberPreference(int preference, int value){
+        if(value < 0 || value > 99)
+                throw new IllegalArgumentException("Number preferences must be between 0 and 99 inclusive!");
+        if (preference < 0 || preference > 2)
+            throw new IllegalArgumentException("Players must only have 3 number preferences");
         numberPreference[preference] = value;
+    }
+    
+    /**
+     * Set number preferences
+     * @param preferences Array of preference, ordered from most to least preferred
+     */
+    public void setNumberPreferences(int[] preferences){
+        if(preferences.length > 3)
+            throw new IllegalArgumentException("Players must only have 3 number preferences");
+        for(int preference : preferences){
+            if(preference < 0 || preference > 99)
+                throw new IllegalArgumentException("Number preferences must be between 0 and 99 inclusive!");
+        }
+        numberPreference = preferences;
     }
     
     /**
@@ -136,6 +192,14 @@ public class HockeyPlayer {
      */
     public List<String> getNicknames(){
         return nicknames;
+    }
+    
+    /**
+     * Set list of nicknames
+     * @param nicknames List containing all nicknames for this player
+     */
+    public void setNicknames(List<String> nicknames){
+        this.nicknames = nicknames;
     }
     
 }

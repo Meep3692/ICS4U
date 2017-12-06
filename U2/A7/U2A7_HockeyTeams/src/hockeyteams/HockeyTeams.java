@@ -5,6 +5,13 @@
  */
 package hockeyteams;
 
+import java.awt.Component;
+import java.awt.event.ItemEvent;
+import java.util.List;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+
 /**
  * GUI and main entry point
  * @author Darian
@@ -18,6 +25,7 @@ public class HockeyTeams extends javax.swing.JFrame {
      */
     public HockeyTeams() {
         tableModel = new TeamTableModel();
+        //Set all filters to show
         tableModel.setGradeFilter(9, true);
         tableModel.setGradeFilter(10, true);
         tableModel.setGradeFilter(11, true);
@@ -25,8 +33,32 @@ public class HockeyTeams extends javax.swing.JFrame {
         tableModel.setGradeFilter(13, true);
         tableModel.setTeamFilter(Team.Boys, true);
         tableModel.setTeamFilter(Team.Girls, true);
-        tableModel.setPositionFilter(Position.D, true);//WORK HERE
+        tableModel.setPositionFilter(Position.D, true);
+        tableModel.setPositionFilter(Position.F, true);
+        tableModel.setPositionFilter(Position.G, true);
+        
         initComponents();
+        
+        //Set table renderers for irregular types
+        playersTable.setDefaultRenderer(int[].class, new IntArrayRenderer());
+        playersTable.setDefaultRenderer(List.class, new ListRenderer());
+        
+        //Set table editors for irregular types
+        playersTable.setDefaultEditor(Team.class, new DefaultCellEditor(new JComboBox<>(Team.values())));//DefaultCellEditors made from JComboBoxes set with the enumerator
+        playersTable.setDefaultEditor(Position.class, new DefaultCellEditor(new JComboBox<>(Position.values())));
+        playersTable.setDefaultEditor(int[].class, new IntArrayEditor());
+        playersTable.setDefaultEditor(List.class, new StringListEditor());
+        
+        //Set event listener for filters
+        //I would do this from the designer but it's finicky and keeps messing it up
+        for(Component component : filterPanel.getComponents()){//Iterate through every component
+            System.out.println(component.getClass());
+            if(component instanceof JCheckBox){//Every checkbox is for filtering
+                ((JCheckBox) component).addItemListener((ItemEvent evt) -> {//Add item listner for when box is (un)checked
+                    filterStateChanged(evt);//Run method to parse filter
+                });
+            }
+        }
     }
 
     /**
@@ -40,6 +72,7 @@ public class HockeyTeams extends javax.swing.JFrame {
         java.awt.GridBagConstraints gridBagConstraints;
 
         controlsPanel = new javax.swing.JPanel();
+        filterPanel = new javax.swing.JPanel();
         filtersLabel = new javax.swing.JLabel();
         filterTeamLabel = new javax.swing.JLabel();
         filterTeamGirlsCheckBox = new javax.swing.JCheckBox();
@@ -55,6 +88,7 @@ public class HockeyTeams extends javax.swing.JFrame {
         filterPositionDCheckBox = new javax.swing.JCheckBox();
         filterPositionGCheckBox = new javax.swing.JCheckBox();
         addPlayerButton = new javax.swing.JButton();
+        removePlayerButton = new javax.swing.JButton();
         playersTableScrollPane = new javax.swing.JScrollPane();
         playersTable = new javax.swing.JTable();
 
@@ -62,103 +96,124 @@ public class HockeyTeams extends javax.swing.JFrame {
 
         controlsPanel.setLayout(new java.awt.GridBagLayout());
 
-        filtersLabel.setText("Sorting");
+        filterPanel.setLayout(new java.awt.GridBagLayout());
+
+        filtersLabel.setText("Filters");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 3;
-        controlsPanel.add(filtersLabel, gridBagConstraints);
+        filterPanel.add(filtersLabel, gridBagConstraints);
 
         filterTeamLabel.setText("Team");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 2);
-        controlsPanel.add(filterTeamLabel, gridBagConstraints);
+        filterPanel.add(filterTeamLabel, gridBagConstraints);
 
+        filterTeamGirlsCheckBox.setSelected(true);
         filterTeamGirlsCheckBox.setText("Girls");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 2);
-        controlsPanel.add(filterTeamGirlsCheckBox, gridBagConstraints);
+        filterPanel.add(filterTeamGirlsCheckBox, gridBagConstraints);
 
+        filterTeamBoysCheckBox.setSelected(true);
         filterTeamBoysCheckBox.setText("Boys");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 5;
         gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 2);
-        controlsPanel.add(filterTeamBoysCheckBox, gridBagConstraints);
+        filterPanel.add(filterTeamBoysCheckBox, gridBagConstraints);
 
         filterGradeLabel.setText("Grade");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 2);
-        controlsPanel.add(filterGradeLabel, gridBagConstraints);
+        filterPanel.add(filterGradeLabel, gridBagConstraints);
 
+        filterGrade9CheckBox.setSelected(true);
         filterGrade9CheckBox.setText("9");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 2);
-        controlsPanel.add(filterGrade9CheckBox, gridBagConstraints);
+        filterPanel.add(filterGrade9CheckBox, gridBagConstraints);
 
+        filterGrade10CheckBox.setSelected(true);
         filterGrade10CheckBox.setText("10");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 2);
-        controlsPanel.add(filterGrade10CheckBox, gridBagConstraints);
+        filterPanel.add(filterGrade10CheckBox, gridBagConstraints);
 
+        filterGrade11CheckBox.setSelected(true);
         filterGrade11CheckBox.setText("11");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 2);
-        controlsPanel.add(filterGrade11CheckBox, gridBagConstraints);
+        filterPanel.add(filterGrade11CheckBox, gridBagConstraints);
 
+        filterGrade12CheckBox.setSelected(true);
         filterGrade12CheckBox.setText("12");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 5;
         gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 2);
-        controlsPanel.add(filterGrade12CheckBox, gridBagConstraints);
+        filterPanel.add(filterGrade12CheckBox, gridBagConstraints);
 
+        filterGrade13CheckBox.setSelected(true);
         filterGrade13CheckBox.setText("13");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 6;
         gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 2);
-        controlsPanel.add(filterGrade13CheckBox, gridBagConstraints);
+        filterPanel.add(filterGrade13CheckBox, gridBagConstraints);
 
         filterPositionCheckBox.setText("Position");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 2);
-        controlsPanel.add(filterPositionCheckBox, gridBagConstraints);
+        filterPanel.add(filterPositionCheckBox, gridBagConstraints);
 
+        filterPositionFCheckBox.setSelected(true);
         filterPositionFCheckBox.setText("F");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 2);
-        controlsPanel.add(filterPositionFCheckBox, gridBagConstraints);
+        filterPanel.add(filterPositionFCheckBox, gridBagConstraints);
 
+        filterPositionDCheckBox.setSelected(true);
         filterPositionDCheckBox.setText("D");
+        filterPositionDCheckBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                filterStateChanged(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 2);
-        controlsPanel.add(filterPositionDCheckBox, gridBagConstraints);
+        filterPanel.add(filterPositionDCheckBox, gridBagConstraints);
 
+        filterPositionGCheckBox.setSelected(true);
         filterPositionGCheckBox.setText("G");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 6;
         gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 2);
-        controlsPanel.add(filterPositionGCheckBox, gridBagConstraints);
+        filterPanel.add(filterPositionGCheckBox, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridwidth = 2;
+        controlsPanel.add(filterPanel, gridBagConstraints);
 
         addPlayerButton.setText("Add Player");
         addPlayerButton.addActionListener(new java.awt.event.ActionListener() {
@@ -166,7 +221,21 @@ public class HockeyTeams extends javax.swing.JFrame {
                 addPlayerButtonActionPerformed(evt);
             }
         });
-        controlsPanel.add(addPlayerButton, new java.awt.GridBagConstraints());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        controlsPanel.add(addPlayerButton, gridBagConstraints);
+
+        removePlayerButton.setText("Remove Player");
+        removePlayerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removePlayerButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        controlsPanel.add(removePlayerButton, gridBagConstraints);
 
         getContentPane().add(controlsPanel, java.awt.BorderLayout.PAGE_START);
 
@@ -179,10 +248,54 @@ public class HockeyTeams extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void addPlayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPlayerButtonActionPerformed
-        HockeyPlayer newPlayer = new AddPlayerDialog(this, true).showDialog();
-        tableModel.addPlayer(newPlayer);
+        HockeyPlayer newPlayer = new AddPlayerDialog(this, true).showDialog();//Get player from player dialog
+        if(newPlayer == null)//If we close the dialog, it returns null
+            return;//Just exit the method when this happens
+        tableModel.addPlayer(newPlayer);//Add player to table
+        
+        setSize(getSize().width, getSize().height + 1);//Slightly change size, only was to get it to reliably repaint
     }//GEN-LAST:event_addPlayerButtonActionPerformed
 
+    private void filterStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_filterStateChanged
+        boolean newValue = evt.getStateChange() == ItemEvent.SELECTED;//Test if box is selected
+        
+        System.out.println(((JCheckBox)evt.getItem()).getText() + ": " + newValue);
+                
+        try{//If it was a grade box we can parse it as an int
+            int grade = Integer.parseInt(((JCheckBox)evt.getItem()).getText());
+            tableModel.setGradeFilter(grade, newValue);
+        }catch(NumberFormatException e){//If it wasn't a grade box, this exception is thrown and we can switch on the remaining
+            switch(((JCheckBox)evt.getItem()).getText()){
+                case "Girls":
+                    tableModel.setTeamFilter(Team.Girls, newValue);
+                    break;
+                case "Boys":
+                    tableModel.setTeamFilter(Team.Girls, newValue);
+                    break;
+                case "F":
+                    tableModel.setPositionFilter(Position.F, newValue);
+                    break;
+                case "D":
+                    tableModel.setPositionFilter(Position.D, newValue);
+                    break;
+                case "G":
+                    tableModel.setPositionFilter(Position.G, newValue);
+                    break;
+            }
+        }
+    }//GEN-LAST:event_filterStateChanged
+
+    private void removePlayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removePlayerButtonActionPerformed
+        
+        HockeyPlayer player = tableModel.getPlayerAtRow(playersTable.getSelectedRow());//Get player at selected row
+        tableModel.removePlayer(player);//Remove player
+        
+        //Repaint to show removed player
+        invalidate();
+        validate();
+        repaint();
+    }//GEN-LAST:event_removePlayerButtonActionPerformed
+    
     /**
      * @param args the command line arguments
      */
@@ -227,6 +340,7 @@ public class HockeyTeams extends javax.swing.JFrame {
     private javax.swing.JCheckBox filterGrade13CheckBox;
     private javax.swing.JCheckBox filterGrade9CheckBox;
     private javax.swing.JLabel filterGradeLabel;
+    private javax.swing.JPanel filterPanel;
     private javax.swing.JLabel filterPositionCheckBox;
     private javax.swing.JCheckBox filterPositionDCheckBox;
     private javax.swing.JCheckBox filterPositionFCheckBox;
@@ -237,5 +351,6 @@ public class HockeyTeams extends javax.swing.JFrame {
     private javax.swing.JLabel filtersLabel;
     private javax.swing.JTable playersTable;
     private javax.swing.JScrollPane playersTableScrollPane;
+    private javax.swing.JButton removePlayerButton;
     // End of variables declaration//GEN-END:variables
 }
