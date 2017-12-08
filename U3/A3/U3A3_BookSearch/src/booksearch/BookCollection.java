@@ -41,7 +41,7 @@ public class BookCollection {
                                 , Integer.parseInt(line)//Parse this line for the reference number
                         ));//This will make it skip every second line which we want
             }
-            return new BookCollection((Book[])bookList.toArray());//Convert list to array and return new bok collection
+            return new BookCollection(bookList.toArray(new Book[0]));//Convert list to array and return new bok collection
         } catch (IOException ex) {
             Logger.getLogger(BookCollection.class.getName()).log(Level.SEVERE, null, ex);
             return null;
@@ -56,10 +56,10 @@ public class BookCollection {
     
     public SearchResult search(SearchMethod method, int refNumber){
         String title;//String to store title
-        long timeMillis;//Long integer to store the time it takes
-        long startTimeMillis = System.currentTimeMillis();//Get the time before searching
+        long timeNanos;//Long integer to store the time it takes
+        long startTimeNanos = System.nanoTime();//Get the time before searching
         title = method.search(books, refNumber);//Search
-        timeMillis = System.currentTimeMillis() - startTimeMillis;//Get the time elapsed
-        return new SearchResult(title, timeMillis);//Create results and return it
+        timeNanos = System.nanoTime() - startTimeNanos;//Get the time elapsed
+        return new SearchResult(title, timeNanos);//Create results and return it
     }
 }

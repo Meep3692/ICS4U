@@ -11,10 +11,10 @@ package booksearch;
  */
 public class SearchResult {
     public final String title;
-    public final long timeMillis;
+    public final long timeNanos;
 
-    public SearchResult(String title, long timeMillis) {
+    public SearchResult(String title, long timeNanos) {
         this.title = title;
-        this.timeMillis = timeMillis;
+        this.timeNanos = timeNanos;
     }
 }

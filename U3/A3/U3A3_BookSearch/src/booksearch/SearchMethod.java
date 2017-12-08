@@ -6,7 +6,7 @@
 package booksearch;
 
 /**
- *
+ *  Interface for search methods used by BookCollection
  * @author Darian
  */
 public interface SearchMethod {
