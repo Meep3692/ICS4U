@@ -80,6 +80,7 @@ public class BookSearch extends javax.swing.JFrame {
         binaryTimeField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Book Search");
         java.awt.GridBagLayout layout = new java.awt.GridBagLayout();
         layout.columnWidths = new int[] {0, 100, 0};
         getContentPane().setLayout(layout);
@@ -129,7 +130,7 @@ public class BookSearch extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         getContentPane().add(binaryField, gridBagConstraints);
 
-        jLabel1.setText("Time");
+        jLabel1.setText("Time (Nanoseconds)");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
