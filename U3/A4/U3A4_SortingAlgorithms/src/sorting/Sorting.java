@@ -5,16 +5,21 @@
  */
 package sorting;
 
+import javax.swing.DefaultListModel;
+
 /**
  *
  * @author Darian
  */
 public class Sorting extends javax.swing.JFrame {
 
+    Sorter sorter;
+    
     /**
      * Creates new form Sorting
      */
     public Sorting() {
+        sorter = new Sorter();
         initComponents();
     }
 
@@ -26,22 +31,132 @@ public class Sorting extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
+
+        listPanel = new javax.swing.JPanel();
+        listLabelsPanel = new javax.swing.JPanel();
+        unsortedListLabel = new javax.swing.JLabel();
+        sortedListLabel = new javax.swing.JLabel();
+        listContentsPanel = new javax.swing.JPanel();
+        unsortedListScrollPane = new javax.swing.JScrollPane();
+        unsortedList = new javax.swing.JList<>();
+        sortedListScrollPane = new javax.swing.JScrollPane();
+        sortedList = new javax.swing.JList<>();
+        controlsPanel = new javax.swing.JPanel();
+        algorithmLabel = new javax.swing.JLabel();
+        algorithmComboBox = new javax.swing.JComboBox<>();
+        orderLabel = new javax.swing.JLabel();
+        orderComboBox = new javax.swing.JComboBox<>();
+        quantityLabel = new javax.swing.JLabel();
+        quantitySpinner = new javax.swing.JSpinner();
+        sortButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        listPanel.setLayout(new java.awt.BorderLayout());
+
+        listLabelsPanel.setLayout(new java.awt.GridLayout(1, 0));
+
+        unsortedListLabel.setText("Unsorted");
+        listLabelsPanel.add(unsortedListLabel);
+
+        sortedListLabel.setText("Sorted");
+        listLabelsPanel.add(sortedListLabel);
+
+        listPanel.add(listLabelsPanel, java.awt.BorderLayout.PAGE_START);
+
+        listContentsPanel.setLayout(new java.awt.GridLayout(1, 0));
+
+        unsortedListScrollPane.setViewportView(unsortedList);
+
+        listContentsPanel.add(unsortedListScrollPane);
+
+        sortedListScrollPane.setViewportView(sortedList);
+
+        listContentsPanel.add(sortedListScrollPane);
+
+        listPanel.add(listContentsPanel, java.awt.BorderLayout.CENTER);
+
+        getContentPane().add(listPanel, java.awt.BorderLayout.CENTER);
+
+        controlsPanel.setLayout(new java.awt.GridBagLayout());
+
+        algorithmLabel.setText("Algorithm:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        controlsPanel.add(algorithmLabel, gridBagConstraints);
+
+        algorithmComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selection", "Bubble", "Insertion", "Quick" }));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
+        controlsPanel.add(algorithmComboBox, gridBagConstraints);
+
+        orderLabel.setText("Order:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 0, 0);
+        controlsPanel.add(orderLabel, gridBagConstraints);
+
+        orderComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ascending", "Descending" }));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
+        controlsPanel.add(orderComboBox, gridBagConstraints);
+
+        quantityLabel.setText("# of items");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 0, 0);
+        controlsPanel.add(quantityLabel, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
+        controlsPanel.add(quantitySpinner, gridBagConstraints);
+
+        sortButton.setText("Sort");
+        sortButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sortButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 0, 0);
+        controlsPanel.add(sortButton, gridBagConstraints);
+
+        getContentPane().add(controlsPanel, java.awt.BorderLayout.EAST);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void sortButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sortButtonActionPerformed
+        int quantity;
+        String algorithm;
+        boolean inverted;
+        int[] unsorted, sorted;
+        
+        quantity = (int)quantitySpinner.getValue();//Get quantity of numbers
+        algorithm = (String)algorithmComboBox.getSelectedItem();//Get selected algorithm
+        unsorted = sorter.regenerateList(quantity);//Generate new random list
+        inverted = orderComboBox.getSelectedIndex() == 1;//If inverted selected (index 1), this will be true; otherwise false
+        
+        switch(algorithm){
+            case "Selection":
+                sorted = sorter.selectionSort(inverted);//Use selection sort
+            default:
+                sorted = new int[0];//This shouldn't be able to happen
+        }
+        
+    }//GEN-LAST:event_sortButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -79,5 +194,22 @@ public class Sorting extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> algorithmComboBox;
+    private javax.swing.JLabel algorithmLabel;
+    private javax.swing.JPanel controlsPanel;
+    private javax.swing.JPanel listContentsPanel;
+    private javax.swing.JPanel listLabelsPanel;
+    private javax.swing.JPanel listPanel;
+    private javax.swing.JComboBox<String> orderComboBox;
+    private javax.swing.JLabel orderLabel;
+    private javax.swing.JLabel quantityLabel;
+    private javax.swing.JSpinner quantitySpinner;
+    private javax.swing.JButton sortButton;
+    private javax.swing.JList<String> sortedList;
+    private javax.swing.JLabel sortedListLabel;
+    private javax.swing.JScrollPane sortedListScrollPane;
+    private javax.swing.JList<String> unsortedList;
+    private javax.swing.JLabel unsortedListLabel;
+    private javax.swing.JScrollPane unsortedListScrollPane;
     // End of variables declaration//GEN-END:variables
 }
