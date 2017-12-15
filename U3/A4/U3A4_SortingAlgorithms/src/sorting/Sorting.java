@@ -139,10 +139,10 @@ public class Sorting extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void sortButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sortButtonActionPerformed
-        int quantity;
-        String algorithm;
-        boolean inverted;
-        int[] unsorted, sorted;
+        int quantity;//Number of elements to sort
+        String algorithm;//Algorithm to use
+        boolean inverted;//Whether to sort descending
+        int[] unsorted, sorted;//Arrays of sorted and unsorted elements
         
         quantity = (int)quantitySpinner.getValue();//Get quantity of numbers
         algorithm = (String)algorithmComboBox.getSelectedItem();//Get selected algorithm
@@ -152,10 +152,32 @@ public class Sorting extends javax.swing.JFrame {
         switch(algorithm){
             case "Selection":
                 sorted = sorter.selectionSort(inverted);//Use selection sort
+                break;
+            case "Bubble":
+                sorted = sorter.bubbleSort(inverted);//Use bubble sort
+                break;
+            case "Insertion":
+                sorted = sorter.insertionsSort(inverted);
+                break;
+            case "Quick":
+                sorted = sorter.quickSort(inverted);
+                break;
             default:
-                sorted = new int[0];//This shouldn't be able to happen
+                sorted = new int[1];//This shouldn't be able to happen
         }
         
+        //Put numbers into lists
+        DefaultListModel unsortedModel, sortedModel;//Create new list models
+        unsortedModel = new DefaultListModel();
+        sortedModel = new DefaultListModel();
+        
+        for(int i = 0; i < quantity; i++){//Iterate through numbers
+            unsortedModel.addElement(unsorted[i]);//Populate models with numbers
+            sortedModel.addElement(sorted[i]);
+        }
+        
+        unsortedList.setModel(unsortedModel);//Set models on lists
+        sortedList.setModel(sortedModel);
     }//GEN-LAST:event_sortButtonActionPerformed
 
     /**
