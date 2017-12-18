@@ -112,8 +112,8 @@ public class Sorter {
             
             //Swap A[i] with A[j]
             int temp = A[i];//Store A[i] in a temporary variable as it will be overwritten
-            A[i] = A[j];
-            A[j] = temp;
+            A[i] = A[j];//Set A[i] to A[j]
+            A[j] = temp;//Set A[j] to the former value of A[i]
         }
     }
 }
