@@ -5,8 +5,10 @@
  */
 package julyfight;
 
+import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import julyfight.player.Trudeau;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
@@ -19,23 +21,31 @@ import org.newdawn.slick.SlickException;
  */
 public class JulyFight extends BasicGame {
 
+    private Stack<GameState> gameState;
+    
     public JulyFight(String title) {
         super(title);
+        gameState = new Stack<>();
+    }
+    
+    private void pushState(GameState state, GameContainer gc){
+        state.init(gc);
+        gameState.push(state);
     }
 
     @Override
     public void init(GameContainer container) throws SlickException {
-        
+        pushState(new Game(new Trudeau(), null), container);
     }
 
     @Override
     public void update(GameContainer container, int delta) throws SlickException {
-        
+        gameState.peek().update(container, delta);
     }
 
     @Override
     public void render(GameContainer container, Graphics g) throws SlickException {
-        
+        gameState.peek().render(container, g);
     }
     
     /**
