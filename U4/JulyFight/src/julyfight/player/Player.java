@@ -75,7 +75,7 @@ public abstract class Player {
         
         System.out.println(Constants.DRAG);
         //Calculate drag
-        Vector2 drag = Vector2.multiply(velocity, -velocity.getMagnitude());//Velocity squared (also make opposite direction)
+        /*Vector2 drag = Vector2.multiply(velocity, -velocity.getMagnitude());//Velocity squared (also make opposite direction)
         drag.multiply(Constants.DRAG);//Times drag coeffecient
         velocity.add(Vector2.multiply(velocity, ((float)delta / 1000)));//Add onto velocity
         
@@ -83,7 +83,7 @@ public abstract class Player {
         if(onFloor){
             double friction = -velocity.getX() * Constants.FRICTION;//Velocity times friction coeffecient (also opposite direction)
             velocity.addX(friction * ((float)delta / 1000));//Add to x velocity
-        }
+        }*/
         
         //Move collider
         collider.moveTo(Vector2.add(position, colliderOffset));
@@ -96,11 +96,12 @@ public abstract class Player {
                     (game.getControl(Control.P2LEFT) && playerNum == 2)//Or if player 2 and player 2 left is pressed
                 ) && velocity.getX() > -Constants.MAX_SPEED){//And if we can accelerate in that direction
             if(onFloor){//On floor
-                velocity.addX(-Constants.PLAYER_ACC * ((double)delta / 1000));//Floor acc
+                //velocity.addX(-Constants.PLAYER_ACC * ((double)delta / 1000));//Floor acc
+                velocity.setX(-Constants.PLAYER_ACC * ((double)delta / 1000));
                 state = WALK;
             }
-            else//In air
-                velocity.addX(-Constants.AIR_ACC * ((double)delta / 1000));//Air acc
+            //else//In air
+                //position.addX(-Constants.AIR_ACC * ((double)delta / 1000));//Air acc
         }
         if(
                 (
@@ -108,11 +109,11 @@ public abstract class Player {
                     (game.getControl(Control.P2RIGHT) && playerNum == 2)//Or if player 2 and player 2 right is pressed
                 ) && velocity.getX() < Constants.MAX_SPEED){//And if we can accelerate in that direction
             if(onFloor){//On floor
-                velocity.addX(Constants.PLAYER_ACC * ((double)delta / 1000));//Accelerate normally
+                velocity.setX(Constants.PLAYER_ACC * ((double)delta / 1000));//Accelerate normally
                 state = WALK;
             }
-            else//In air
-                velocity.addX(Constants.AIR_ACC * ((double)delta / 1000));//Use air acc
+            //else//In air
+                //velocity.setX(Constants.AIR_ACC * ((double)delta / 1000));//Use air acc
         }
         if(
                 (

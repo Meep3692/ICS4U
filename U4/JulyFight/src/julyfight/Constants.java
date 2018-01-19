@@ -21,12 +21,12 @@ public class Constants {
     /**
      * Acceleration in pixels / second ^ 2
      */
-    public static final double PLAYER_ACC = 5000;
+    public static final double PLAYER_ACC = 500;
     
     /**
      * Air acceleration
      */
-    public static final double AIR_ACC = 3000;
+    public static final double AIR_ACC = 300;
     
     /**
      * Maximum speed for players in pixels / second
