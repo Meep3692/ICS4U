@@ -43,6 +43,16 @@ public class Config {
             controls[Input.KEY_S] = Control.P1DOWN;
             controls[Input.KEY_D] = Control.P1RIGHT;
             
+            controls[Input.KEY_T] = Control.P1LP;
+            controls[Input.KEY_Y] = Control.P1MP;
+            controls[Input.KEY_U] = Control.P1HP;
+            controls[Input.KEY_I] = Control.P1B1;
+            
+            controls[Input.KEY_G] = Control.P1LK;
+            controls[Input.KEY_H] = Control.P1MK;
+            controls[Input.KEY_J] = Control.P1HK;
+            controls[Input.KEY_K] = Control.P1B2;
+            
             //Set player 2 controls
             controls[Input.KEY_UP] = Control.P2UP;
             controls[Input.KEY_LEFT] = Control.P2LEFT;

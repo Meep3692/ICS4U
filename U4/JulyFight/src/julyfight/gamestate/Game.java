@@ -24,8 +24,8 @@ import org.newdawn.slick.SlickException;
  */
 public class Game extends GameState {
 
-    Player player1;//Player 1
-    Player player2;//PLayer 2
+    public Player player1;//Player 1
+    public Player player2;//PLayer 2
     
     //Sets of buttons that were pressed held or unpressed this frame
     private EnumSet<Control> buttonsDown;
