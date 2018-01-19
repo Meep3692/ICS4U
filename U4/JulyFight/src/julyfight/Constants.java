@@ -16,7 +16,7 @@ public class Constants {
     /**
      * Amount added to velocity for gravity
      */
-    public static final double GRAVITY = 2;
+    public static final double GRAVITY = 3000;
     
     /**
      * Acceleration in pixels / second ^ 2
@@ -26,7 +26,7 @@ public class Constants {
     /**
      * Air acceleration
      */
-    public static final double AIR_ACC = 1000;
+    public static final double AIR_ACC = 3000;
     
     /**
      * Maximum speed for players in pixels / second
@@ -41,10 +41,10 @@ public class Constants {
     /**
      * Amount of drag on players
      */
-    public static final double DRAG = 0.0000005;
+    public static final double DRAG = 500;
     
     /**
      * Amount of friction experienced by the player
      */
-    public static final double FRICTION = 0.01;
+    public static final double FRICTION = 10;
 }

@@ -64,6 +64,7 @@ public class JulyFight extends BasicGame {
             JulyFight game = new JulyFight("July Fight");//New game instance
             AppGameContainer gc = new AppGameContainer(game);//New game container
             gc.setDisplayMode(800, 600, false);//Set window to 800 x 600
+            //gc.setVSync(true);//Enable vsync
             gc.start();//Start game
         } catch (SlickException ex) {
             Logger.getLogger(JulyFight.class.getName()).log(Level.SEVERE, null, ex);

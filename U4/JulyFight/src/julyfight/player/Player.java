@@ -61,7 +61,8 @@ public abstract class Player {
     }
     
     public void update(GameContainer gc, int delta){
-        velocity.addY(Constants.GRAVITY);//Acceleration due to gravity
+        System.out.println("Update " + delta);
+        velocity.addY(Constants.GRAVITY * ((float)delta / 1000));//Acceleration due to gravity
         position.add(Vector2.multiply(velocity, (float)delta / 1000f));//Move according to velocity
         if(position.getY() > game.getBottom()){//If going through floor
             position.setY(game.getBottom());//Put on floor
@@ -71,15 +72,17 @@ public abstract class Player {
         }else{
             onFloor = false;//Must not be on floor
         }
+        
+        System.out.println(Constants.DRAG);
         //Calculate drag
         Vector2 drag = Vector2.multiply(velocity, -velocity.getMagnitude());//Velocity squared (also make opposite direction)
         drag.multiply(Constants.DRAG);//Times drag coeffecient
-        velocity.add(drag);//Add onto velocity
+        velocity.add(Vector2.multiply(velocity, ((float)delta / 1000)));//Add onto velocity
         
         //Friction if applicible
         if(onFloor){
             double friction = -velocity.getX() * Constants.FRICTION;//Velocity times friction coeffecient (also opposite direction)
-            velocity.addX(friction);//Add to x velocity
+            velocity.addX(friction * ((float)delta / 1000));//Add to x velocity
         }
         
         //Move collider

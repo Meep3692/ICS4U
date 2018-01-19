@@ -63,7 +63,9 @@ public class Game extends GameState {
         
         try {
             background = new Image("julyfight/assets/hillNight.png");
-            //TODO: BARS
+            Image barsbg = new Image("julyfight/assets/ui/bars/barsbg.png");
+            Image bar = new Image("julyfight/assets/ui/bars/bar.png");
+            healthBars = new Bar(bar, barsbg, player1, player2);
         } catch (SlickException ex) {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -91,7 +93,7 @@ public class Game extends GameState {
         for(Effect effect : effects){//Render effects
             effect.render(gc, g);
         }
-        
+        healthBars.render(gc, g);
     }
     
     /**

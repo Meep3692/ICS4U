@@ -27,6 +27,10 @@ public class Bar {
     
     private Player player1;
     private Player player2;
+    
+    private int bar1Size;
+    private int bar2Size;
+    private int bar2Location;
 
     public Bar(Image health, Image barBG, Player player1, Player player2){
         this.health = health;
@@ -34,17 +38,23 @@ public class Bar {
         this.player1 = player1;
         this.player2 = player2;
         try {
-            time = new UnicodeFont("julyfight/assets/DOS.ttf", 30, false, false);
+            time = new UnicodeFont("julyfight/assets/ui/bars/DOS.ttf", 30, false, false);
         } catch (SlickException ex) {
             Logger.getLogger(Bar.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
+    public void update(GameContainer gc, int delta){
+        bar1Size = health.getWidth() * (player1.getHealth() / 100);
+        bar2Size = health.getWidth() * (player2.getHealth() / 100);
+        bar2Location = gc.getWidth() - (health.getWidth() + 24);
+    }
+    
     public void render(GameContainer gc, Graphics g){
         barBG.draw();//Draw this at 0 0
         //Draw health bars
-        health.draw(0, 0, health.getWidth() * (player1.getHealth() / 100), health.getHeight());
-        health.draw(gc.getWidth() - (health.getWidth() * (player2.getHealth() / 100)), 0, health.getWidth() * (player2.getHealth() / 100), health.getHeight());
+        health.draw(24, 48, bar1Size, health.getHeight());
+        health.draw(bar2Location, 48, bar2Size, health.getHeight());
         time.drawString((gc.getWidth() / 2) - (time.getWidth("00") / 2), 0, "00");
     }
 }
