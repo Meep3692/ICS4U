@@ -21,7 +21,7 @@ import org.newdawn.slick.SlickException;
 
 /**
  *
- * @author Awoo
+ * @author Darian
  */
 public class MainMenu extends GameState {
 

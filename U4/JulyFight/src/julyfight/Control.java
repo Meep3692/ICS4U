@@ -7,7 +7,7 @@ package julyfight;
 
 /**
  *
- * @author Awoo
+ * @author Darian
  */
 public enum Control {
     NONE,

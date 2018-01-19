@@ -7,7 +7,7 @@ package julyfight.physics;
 
 /**
  *
- * @author Awoo
+ * @author Darian
  */
 public class Vector2 {
     private double x;

@@ -19,7 +19,7 @@ import org.newdawn.slick.SlickException;
 
 /**
  *
- * @author Awoo
+ * @author Darian
  */
 public class Trudeau extends Player {
     

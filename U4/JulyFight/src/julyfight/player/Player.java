@@ -16,7 +16,7 @@ import org.newdawn.slick.Graphics;
 
 /**
  *
- * @author Awoo
+ * @author Darian
  */
 public abstract class Player {
     
@@ -152,6 +152,14 @@ public abstract class Player {
      */
     public final Vector2 getPosition(){
         return position.clone();
+    }
+    
+    /**
+     * Get player health
+     * @return Player health [0, 100]
+     */
+    public final int getHealth(){
+        return health;
     }
     
 }

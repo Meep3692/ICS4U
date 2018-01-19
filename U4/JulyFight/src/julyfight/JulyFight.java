@@ -5,14 +5,11 @@
  */
 package julyfight;
 
-import julyfight.gamestate.Game;
 import julyfight.gamestate.GameState;
 import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import julyfight.gamestate.MainMenu;
-import julyfight.player.Diefenbaker;
-import julyfight.player.Trudeau;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
@@ -21,41 +18,41 @@ import org.newdawn.slick.SlickException;
 
 /**
  *
- * @author Awoo
+ * @author Darian
  */
 public class JulyFight extends BasicGame {
 
-    private Stack<GameState> gameState;
-    private GameContainer gc;
+    private Stack<GameState> gameState;//Stack of game states
+    private GameContainer gc;//Game container
     
     public JulyFight(String title) {
         super(title);
-        gameState = new Stack<>();
+        gameState = new Stack<>();//Initiralise stack
     }
     
     public void pushState(GameState state){
-        if(!gameState.empty())
-            gameState.peek().setActive(false);
-        state.setActive(true);
-        state.init(gc);
-        gameState.push(state);
+        if(!gameState.empty())//Skip this if this is the first state
+            gameState.peek().setActive(false);//Disable previous state
+        state.setActive(true);//Enable current state
+        state.init(gc);//Initialise current state
+        gameState.push(state);//Push current state to stack
     }
 
     @Override
     public void init(GameContainer container) throws SlickException {
-        gc = container;
-        Config.loadConfig();
-        pushState(new MainMenu(this));
+        gc = container;//Set game container
+        Config.loadConfig();//Load configuration
+        pushState(new MainMenu(this));//Push the main menu
     }
 
     @Override
     public void update(GameContainer container, int delta) throws SlickException {
-        gameState.peek().update(container, delta);
+        gameState.peek().update(container, delta);//Update current game state
     }
 
     @Override
     public void render(GameContainer container, Graphics g) throws SlickException {
-        gameState.peek().render(container, g);
+        gameState.peek().render(container, g);//Render current gamestate
     }
     
     /**
@@ -64,10 +61,10 @@ public class JulyFight extends BasicGame {
     public static void main(String[] args) {
         
         try {
-            JulyFight game = new JulyFight("July Fight");
-            AppGameContainer gc = new AppGameContainer(game);
-            gc.setDisplayMode(800, 600, false);
-            gc.start();
+            JulyFight game = new JulyFight("July Fight");//New game instance
+            AppGameContainer gc = new AppGameContainer(game);//New game container
+            gc.setDisplayMode(800, 600, false);//Set window to 800 x 600
+            gc.start();//Start game
         } catch (SlickException ex) {
             Logger.getLogger(JulyFight.class.getName()).log(Level.SEVERE, null, ex);
         }

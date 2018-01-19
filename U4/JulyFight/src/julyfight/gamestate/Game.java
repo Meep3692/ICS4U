@@ -6,12 +6,16 @@
 package julyfight.gamestate;
 
 import java.util.EnumSet;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import julyfight.Config;
 import julyfight.Control;
 import julyfight.JulyFight;
 import julyfight.player.Player;
+import julyfight.ui.Bar;
+import julyfight.ui.Effect;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -19,8 +23,8 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
 /**
- *
- * @author Awoo
+ * Main game state
+ * @author Darian
  */
 public class Game extends GameState {
 
@@ -32,15 +36,21 @@ public class Game extends GameState {
     private EnumSet<Control> buttons;
     private EnumSet<Control> buttonsUp;
     
-    private Image background;
+    private List<Effect> effects;//Effects
+    private Bar healthBars;
+    private Image background;//Background image
     
     public Game(Player player1, Player player2, JulyFight julyFight){
         super(julyFight);
+        
         this.player1 = player1;//Set players
         this.player2 = player2;
+        
         buttonsDown = EnumSet.noneOf(Control.class);//Initialise control sets
         buttons = EnumSet.noneOf(Control.class);
         buttonsUp = EnumSet.noneOf(Control.class);
+        
+        effects = new ArrayList<>();
     }
     
     @Override
@@ -53,6 +63,7 @@ public class Game extends GameState {
         
         try {
             background = new Image("julyfight/assets/hillNight.png");
+            //TODO: BARS
         } catch (SlickException ex) {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -60,26 +71,52 @@ public class Game extends GameState {
 
     @Override
     public void update(GameContainer gc, int delta) {
-        player1.update(gc, delta);
+        player1.update(gc, delta);//Update players
         player2.update(gc, delta);
+        for(Effect effect : effects){//Update effects
+            effect.update(gc, delta);//Run update
+            if(effect.isDead()){//Remove when dead
+                effects.remove(effect);
+            }
+        }
         buttonsDown = EnumSet.noneOf(Control.class);
+        buttonsUp = EnumSet.noneOf(Control.class);
     }
 
     @Override
     public void render(GameContainer gc, Graphics g) {
-        background.draw();
-        player1.render(gc, g);
+        background.draw();//Render background
+        player1.render(gc, g);//Render players
         player2.render(gc, g);
+        for(Effect effect : effects){//Render effects
+            effect.render(gc, g);
+        }
+        
     }
     
+    /**
+     * Check if a control has been pressed since the last update
+     * @param control Control to check
+     * @return True if the rising edge of a button press has occurred since the end of the last update
+     */
     public boolean getControlDown(Control control){
         return buttonsDown.contains(control);
     }
     
+    /**
+     * Check if a control is currently being held
+     * @param control Control to check
+     * @return True if the control is held down, otherwise false
+     */
     public boolean getControl(Control control){
         return buttons.contains(control);
     }
     
+    /**
+     * Check if a control has been released since the end of the last frame
+     * @param control Control to check
+     * @return True if the falling edge of a button press has occurred since the end of the last update
+     */
     public boolean getControlUp(Control control){
         return buttonsUp.contains(control);
     }
@@ -146,6 +183,7 @@ public class Game extends GameState {
         Control control = Config.controls[key];
         if(control != null){
             buttons.remove(control);
+            buttonsUp.add(control);
         }
     }
 

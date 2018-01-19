@@ -7,7 +7,7 @@ package julyfight;
 
 /**
  * Constant values for game features
- * @author Awoo
+ * @author Darian
  */
 public class Constants {
     

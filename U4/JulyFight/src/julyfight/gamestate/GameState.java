@@ -12,7 +12,7 @@ import org.newdawn.slick.InputListener;
 
 /**
  *
- * @author Awoo
+ * @author Darian
  */
 public abstract class GameState implements InputListener {
     

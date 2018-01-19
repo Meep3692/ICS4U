@@ -16,7 +16,7 @@ import org.newdawn.slick.SlickException;
 
 /**
  *
- * @author Awoo
+ * @author Darian
  */
 public class Diefenbaker extends Player {
 
