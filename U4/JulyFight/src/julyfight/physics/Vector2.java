@@ -49,6 +49,14 @@ public class Vector2 {
         y += other.getY();
     }
     
+    public void addX(double amount){
+        x += amount;
+    }
+    
+    public void addY(double amount){
+        y += amount;
+    }
+    
     public static Vector2 add(Vector2 left, Vector2 right){
         return new Vector2(left.getX() + right.getX(), left.getY() + right.getY());
     }

@@ -7,10 +7,7 @@ package julyfight.player;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import julyfight.Constants;
-import julyfight.Control;
 import julyfight.gamestate.Game;
-import julyfight.physics.Vector2;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -21,8 +18,8 @@ import org.newdawn.slick.SlickException;
  *
  * @author Awoo
  */
-public class Trudeau extends Player {
-    
+public class Diefenbaker extends Player {
+
     private static final int IDLE = 0;
     private static final int WALK = 1;
     private static final int PUNCH = 2;
@@ -31,13 +28,13 @@ public class Trudeau extends Player {
     private int state;
     
     private Animation[] animations;
-    
+
     @Override
     public void init(GameContainer gc, Game game, int playerNum) {
         super.init(gc, game, playerNum);
         animations = new Animation[4];
         try {
-            Image idleImage = new Image("julyfight/assets/trudeau/idle.png");
+            Image idleImage = new Image("julyfight/assets/diefenbaker/idle.png");
             animations[IDLE] = new Animation();
             animations[IDLE].addFrame(idleImage, 1);
             
@@ -45,17 +42,13 @@ public class Trudeau extends Player {
         } catch (SlickException ex) {
             Logger.getLogger(Trudeau.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
     }
 
     @Override
     public void update(GameContainer gc, int delta) {
         super.update(gc, delta);
-        
-        
-    }    
-
+    }
+    
     @Override
     public void render(GameContainer gc, Graphics g) {
         if(playerNum == 1)
@@ -70,6 +63,7 @@ public class Trudeau extends Player {
         g.drawLine((int)left, (int)bottom, (int)right, (int)bottom);
         g.drawLine((int)right, (int)bottom, (int)right, (int)top);
         g.drawLine((int)right, (int)top, (int)left, (int)top);
+        
     }
     
 }

@@ -9,7 +9,8 @@ package julyfight;
  *
  * @author Awoo
  */
-public enum Controls {
+public enum Control {
+    NONE,
     P1UP,
     P1DOWN,
     P1LEFT,

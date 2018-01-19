@@ -5,9 +5,13 @@
  */
 package julyfight;
 
+import julyfight.gamestate.Game;
+import julyfight.gamestate.GameState;
 import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import julyfight.gamestate.MainMenu;
+import julyfight.player.Diefenbaker;
 import julyfight.player.Trudeau;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
@@ -22,20 +26,26 @@ import org.newdawn.slick.SlickException;
 public class JulyFight extends BasicGame {
 
     private Stack<GameState> gameState;
+    private GameContainer gc;
     
     public JulyFight(String title) {
         super(title);
         gameState = new Stack<>();
     }
     
-    private void pushState(GameState state, GameContainer gc){
+    public void pushState(GameState state){
+        if(!gameState.empty())
+            gameState.peek().setActive(false);
+        state.setActive(true);
         state.init(gc);
         gameState.push(state);
     }
 
     @Override
     public void init(GameContainer container) throws SlickException {
-        pushState(new Game(new Trudeau(), null), container);
+        gc = container;
+        Config.loadConfig();
+        pushState(new MainMenu(this));
     }
 
     @Override
@@ -54,7 +64,7 @@ public class JulyFight extends BasicGame {
     public static void main(String[] args) {
         
         try {
-            JulyFight game = new JulyFight("Awoo");
+            JulyFight game = new JulyFight("July Fight");
             AppGameContainer gc = new AppGameContainer(game);
             gc.setDisplayMode(800, 600, false);
             gc.start();
