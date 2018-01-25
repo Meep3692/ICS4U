@@ -13,6 +13,8 @@ import java.util.logging.Logger;
 import julyfight.Config;
 import julyfight.Control;
 import julyfight.JulyFight;
+import julyfight.physics.RectangleCollider;
+import julyfight.player.move.Move;
 import julyfight.player.Player;
 import julyfight.ui.Bar;
 import julyfight.ui.Effect;
@@ -75,6 +77,7 @@ public class Game extends GameState {
     public void update(GameContainer gc, int delta) {
         player1.update(gc, delta);//Update players
         player2.update(gc, delta);
+        healthBars.update(gc, delta);
         for(Effect effect : effects){//Update effects
             effect.update(gc, delta);//Run update
             if(effect.isDead()){//Remove when dead
@@ -94,6 +97,25 @@ public class Game extends GameState {
             effect.render(gc, g);
         }
         healthBars.render(gc, g);
+    }
+    
+    public void executeMove(Move move){
+        
+    }
+    
+    /**
+     * Hit an area of the screen
+     * @param where Hitbox for hit
+     * @param amount Amount of damage to do
+     * @param who Who is hitting
+     * @param stunTime Time to stun player for
+     */
+    public void hit(RectangleCollider where, int who, int amount, double stunTime){
+        if(who == 1){
+            if(player2.checkCollision(where)){
+                player2.hit(amount, stunTime);
+            }
+        }
     }
     
     /**
@@ -125,6 +147,10 @@ public class Game extends GameState {
     
     public int getBottom(){
         return 600;
+    }
+    
+    public int getRight(){
+        return 800;
     }
 
     @Override

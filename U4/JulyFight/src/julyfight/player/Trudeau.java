@@ -30,21 +30,24 @@ public class Trudeau extends Player {
     @Override
     public void init(GameContainer gc, Game game, int playerNum) {
         super.init(gc, game, playerNum);
-        animations = new Animation[4];
         try {
             Image idleImage = new Image("julyfight/assets/trudeau/idle.png");
             Image walkImage = new Image("julyfight/assets/trudeau/walk.png");
             Image punchImage = new Image("julyfight/assets/trudeau/punch.png");
             
-            animations[IDLE] = new Animation();
-            animations[IDLE].addFrame(idleImage, 1);
+            Animation idle = new Animation();
+            idle.addFrame(idleImage, 1);
             
-            animations[WALK] = new Animation();
-            animations[WALK].addFrame(idleImage, 100);
-            animations[WALK].addFrame(walkImage, 100);
+            Animation walk = new Animation();
+            walk.addFrame(idleImage, 100);
+            walk.addFrame(walkImage, 100);
             
-            animations[PUNCH] = new Animation();
-            animations[PUNCH].addFrame(punchImage, 1);
+            Animation punch = new Animation();
+            punch.addFrame(punchImage, 1);
+            
+            renderer.addAnimation("idle", idle);
+            renderer.addAnimation("walk", walk);
+            renderer.addAnimation("punch", punch);
             
             state = IDLE;
         } catch (SlickException ex) {

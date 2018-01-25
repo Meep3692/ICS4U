@@ -14,6 +14,13 @@ public class RectangleCollider {
     private Vector2 topLeft;
     private Vector2 size;
     //74 200
+    /**
+     * Create a new RectangleCollider
+     * @param left x position of left side of collider
+     * @param top y position of top of collider
+     * @param width width of collider
+     * @param height height of collider
+     */
     public RectangleCollider(double left, double top, double width, double height){
         topLeft = new Vector2(left, top);
         size = new Vector2(width, height);
