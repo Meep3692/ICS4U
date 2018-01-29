@@ -21,9 +21,12 @@ public abstract class Move {
     protected final Player player;
     protected Input[] inputs;
     
+    public boolean continuous;
+    
     public Move(Game game, Player player){
         this.game = game;
         this.player = player;
+        continuous = false;
     }
     
     public Input getInput(int progress){
@@ -35,6 +38,11 @@ public abstract class Move {
     }
     
     public abstract void execute();
+    
+    /**
+     * If a continuous move, will be run every frame it is held
+     */
+    public abstract void hold();
     
     public abstract void init(GameContainer gc);
 }

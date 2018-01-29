@@ -10,6 +10,9 @@ import java.util.logging.Logger;
 import julyfight.Constants;
 import julyfight.gamestate.Game;
 import julyfight.physics.Vector2;
+import julyfight.player.move.Move;
+import julyfight.player.move.trudeau.Block;
+import julyfight.player.move.trudeau.LightPunch;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -49,6 +52,16 @@ public class Trudeau extends Player {
             renderer.addAnimation("punch", punch);
             
             state = IDLE;
+            
+            //Moves
+            //Light punch
+            Move lp = new LightPunch(game, this);
+            lp.init(gc);
+            moveHandler.addMove(lp);
+            //Block
+            Move block = new Block(game, this);
+            block.init(gc);
+            moveHandler.addMove(block);
         } catch (SlickException ex) {
             Logger.getLogger(Trudeau.class.getName()).log(Level.SEVERE, null, ex);
         }

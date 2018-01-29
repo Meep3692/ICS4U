@@ -21,7 +21,7 @@ public class Constants {
     /**
      * Acceleration in pixels / second ^ 2
      */
-    public static final double PLAYER_ACC = 30000;
+    public static final double PLAYER_ACC = 15000;
     
     /**
      * Jump speed
@@ -36,5 +36,5 @@ public class Constants {
     /**
      * Knockback multiplier
      */
-    public static final double KB_MULT = 1000;
+    public static final double KB_MULT = 100;
 }

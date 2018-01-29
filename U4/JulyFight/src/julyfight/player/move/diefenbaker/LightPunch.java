@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package julyfight.player.move.trudeau;
+package julyfight.player.move.diefenbaker;
 
+import julyfight.player.move.trudeau.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import julyfight.gamestate.Game;
@@ -41,7 +42,7 @@ public class LightPunch extends Move {
     @Override
     public void init(GameContainer gc) {
         try {
-            Image punch = new Image("julyfight/assets/trudeau/punch.png");//Load image for animation
+            Image punch = new Image("julyfight/assets/diefenbaker/punch.png");//Load image for animation
             animation = new Animation();//Initialise animation
             animation.addFrame(punch, 1);//Add frame
             player.renderer.addAnimation("LightPunch", animation);//Add to renderer

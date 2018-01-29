@@ -6,14 +6,14 @@
 package julyfight.player;
 
 /**
- *
+ * Used for move inputs
  * @author Darian
  */
 public enum Input {
     UP,
     DOWN,
-    LEFT,
-    RIGHT,
+    BACK,
+    FORWARD,
     LP,
     MP,
     HP,

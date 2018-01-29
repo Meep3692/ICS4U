@@ -18,11 +18,14 @@ import julyfight.player.move.Move;
 import julyfight.player.Player;
 import julyfight.ui.Bar;
 import julyfight.ui.Effect;
+import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.UnicodeFont;
+import org.newdawn.slick.font.effects.ColorEffect;
 
 /**
  * Main game state
@@ -41,6 +44,8 @@ public class Game extends GameState {
     private List<Effect> effects;//Effects
     private Bar healthBars;
     private Image background;//Background image
+    
+    private UnicodeFont hitFont;
     
     public Game(Player player1, Player player2, JulyFight julyFight){
         super(julyFight);
@@ -68,6 +73,11 @@ public class Game extends GameState {
             Image barsbg = new Image("julyfight/assets/ui/bars/barsbg.png");
             Image bar = new Image("julyfight/assets/ui/bars/bar.png");
             healthBars = new Bar(bar, barsbg, player1, player2);
+            
+            hitFont = new UnicodeFont("julyfight/assets/ui/bars/DOS.ttf", 30, false, false);
+            hitFont.getEffects().add(new ColorEffect(java.awt.Color.YELLOW));
+            hitFont.addAsciiGlyphs();
+            hitFont.loadGlyphs();
         } catch (SlickException ex) {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -77,14 +87,16 @@ public class Game extends GameState {
     public void update(GameContainer gc, int delta) {
         player1.update(gc, delta);//Update players
         player2.update(gc, delta);
-        healthBars.update(gc, delta);
+        healthBars.update(gc, delta);//Update healthbars
+        List<Effect> deadEffects = new ArrayList<>();//Dead effects
         for(Effect effect : effects){//Update effects
             effect.update(gc, delta);//Run update
             if(effect.isDead()){//Remove when dead
-                effects.remove(effect);
+                deadEffects.add(effect);//Add to dead effects
             }
         }
-        buttonsDown = EnumSet.noneOf(Control.class);
+        effects.removeAll(deadEffects);//Remove dead effects
+        buttonsDown = EnumSet.noneOf(Control.class);//Clear buttons down and up before next update
         buttonsUp = EnumSet.noneOf(Control.class);
     }
 
@@ -99,8 +111,8 @@ public class Game extends GameState {
         healthBars.render(gc, g);
     }
     
-    public void executeMove(Move move){
-        
+    public void addEffect(Effect effect){
+        effects.add(effect);
     }
     
     /**
@@ -110,10 +122,18 @@ public class Game extends GameState {
      * @param who Who is hitting
      * @param stunTime Time to stun player for
      */
-    public void hit(RectangleCollider where, int who, int amount, double stunTime){
+    public void hit(RectangleCollider where, int who, float amount, double stunTime){
         if(who == 1){
             if(player2.checkCollision(where)){
                 player2.hit(amount, stunTime);
+                Effect hitEffect = new Effect(hitFont, Float.toString(amount * (float)player2.defenseMod), (int)player2.getPosition().getX(), (int)where.getTop(), 1);
+                addEffect(hitEffect);
+            }
+        }else{
+            if(player1.checkCollision(where)){
+                player1.hit(amount, stunTime);
+                Effect hitEffect = new Effect(hitFont, Float.toString(amount * (float)player1.defenseMod), (int)player1.getPosition().getX(), (int)where.getTop(), 1);
+                addEffect(hitEffect);
             }
         }
     }

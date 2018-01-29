@@ -5,6 +5,7 @@
  */
 package julyfight.player.move;
 
+import java.util.EnumSet;
 import julyfight.player.Input;
 
 /**
@@ -29,14 +30,26 @@ public class MoveTracker {
      * @param input Next input pressed
      * @return Result of the next input
      */
-    public AttemptResult input(Input input){
+    public AttemptResult input(EnumSet<Input> input){
         Input nextInput = move.getInput(progress);//Get next input
-        if(nextInput != input)//If wrong button pressed
+        if(!input.contains(nextInput))//If wrong button pressed
             return AttemptResult.FAIL;//Fail
         progress++;//Increment progress
         if(progress == move.getLength())//If last input
             return AttemptResult.MOVE;//Successful move
         return AttemptResult.PROGRESS;//Otherwise, progressed
+    }
+    
+    /**
+     * Check if move is held
+     * @param input Current inputs
+     * @return FAIL if move ends, MOVE if move holds
+     */
+    public AttemptResult holdInput(EnumSet<Input> input){
+        Input lastInput = move.getInput(move.getLength() - 1);
+        if(!input.contains(lastInput))
+            return AttemptResult.FAIL;
+        return AttemptResult.MOVE;
     }
     
 }

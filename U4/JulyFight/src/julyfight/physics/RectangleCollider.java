@@ -22,6 +22,14 @@ public class RectangleCollider {
      * @param height height of collider
      */
     public RectangleCollider(double left, double top, double width, double height){
+        if(width < 0){//Compensate for negative width by moving rectangle
+            left += width;//Move left
+            width = -width;//Negate width to be positive
+        }
+        if(height < 0){//Same for height
+            top += height;
+            height = -height;
+        }
         topLeft = new Vector2(left, top);
         size = new Vector2(width, height);
     }
