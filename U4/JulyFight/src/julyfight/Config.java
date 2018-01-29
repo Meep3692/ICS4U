@@ -5,6 +5,7 @@
  */
 package julyfight;
 
+import julyfight.player.Control;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;

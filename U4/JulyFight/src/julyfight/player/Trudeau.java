@@ -8,7 +8,6 @@ package julyfight.player;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import julyfight.Constants;
-import julyfight.Control;
 import julyfight.gamestate.Game;
 import julyfight.physics.Vector2;
 import org.newdawn.slick.Animation;

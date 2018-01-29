@@ -3,13 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package julyfight.player.move;
+package julyfight.player.move.trudeau;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import julyfight.gamestate.Game;
 import julyfight.physics.RectangleCollider;
 import julyfight.player.Player;
+import julyfight.player.move.Move;
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 
 /**
  *
@@ -17,6 +23,8 @@ import org.newdawn.slick.Graphics;
  */
 public class LightPunch extends Move {
 
+    private Animation animation;
+    
     public LightPunch(Game game, Player player) {
         super(game, player);
     }
@@ -25,21 +33,18 @@ public class LightPunch extends Move {
     public void execute() {
         RectangleCollider hitBox = new RectangleCollider(player.getPosition().getX(), player.getPosition().getY() - 154, 84, 23);
         game.hit(hitBox, player.getPlayerNumber(), 1, 0.2);
-    }
-
-    @Override
-    public void init(GameContainer gc) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void update(GameContainer gc, int delta) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void render(GameContainer gc, Graphics g) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        player.renderer.setAnimation("LightPunch", 0.2);
     }
     
+    @Override
+    public void init(GameContainer gc) {
+        try {
+            Image punch = new Image("julyfight/assets/trudeau/punch.png");
+            animation = new Animation();
+            animation.addFrame(punch, 1);
+            player.renderer.addAnimation("LightPunch", animation);
+        } catch (SlickException ex) {
+            Logger.getLogger(LightPunch.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

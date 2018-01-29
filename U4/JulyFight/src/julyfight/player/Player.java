@@ -6,7 +6,6 @@
 package julyfight.player;
 
 import julyfight.Constants;
-import julyfight.Control;
 import julyfight.gamestate.Game;
 import julyfight.physics.RectangleCollider;
 import julyfight.physics.Vector2;
@@ -26,7 +25,7 @@ public abstract class Player {
     protected RectangleCollider collider;
     protected int health;
     
-    protected PlayerRenderer renderer;
+    public PlayerRenderer renderer;
     
     private Vector2 colliderOffset = new Vector2(-37, -200);
     
