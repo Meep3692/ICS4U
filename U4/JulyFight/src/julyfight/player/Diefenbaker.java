@@ -8,6 +8,8 @@ package julyfight.player;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import julyfight.gamestate.Game;
+import julyfight.player.move.Move;
+import julyfight.player.move.diefenbaker.*;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -23,23 +25,66 @@ public class Diefenbaker extends Player {
     @Override
     public void init(GameContainer gc, Game game, int playerNum) {
         super.init(gc, game, playerNum);
-        animations = new Animation[4];
         try {
             Image idleImage = new Image("julyfight/assets/diefenbaker/idle.png");
             Image walkImage = new Image("julyfight/assets/diefenbaker/walk.png");
             Image punchImage = new Image("julyfight/assets/diefenbaker/punch.png");
             
-            animations[IDLE] = new Animation();
-            animations[IDLE].addFrame(idleImage, 1);
+            Animation idle = new Animation();
+            idle.addFrame(idleImage, 1);
             
-            animations[WALK] = new Animation();
-            animations[WALK].addFrame(idleImage, 100);
-            animations[WALK].addFrame(walkImage, 100);
+            Animation walk = new Animation();
+            walk.addFrame(idleImage, 100);
+            walk.addFrame(walkImage, 100);
             
-            animations[PUNCH] = new Animation();
-            animations[PUNCH].addFrame(punchImage, 1);
+            Animation punch = new Animation();
+            punch.addFrame(punchImage, 1);
+            
+            renderer.addAnimation("idle", idle);
+            renderer.addAnimation("walk", walk);
+            renderer.addAnimation("punch", punch);
             
             state = IDLE;
+            
+            //Moves
+            //Light punch
+            Move lp = new LightPunch(game, this);
+            lp.init(gc);
+            moveHandler.addMove(lp);
+            //Medium punch
+            Move mp = new MediumPunch(game, this);
+            mp.init(gc);
+            moveHandler.addMove(mp);
+            //Heavy punch
+            Move hp = new HeavyPunch(game, this);
+            hp.init(gc);
+            moveHandler.addMove(hp);
+            
+            //Light kick
+            Move lk = new LightKick(game, this);
+            lk.init(gc);
+            moveHandler.addMove(lk);
+            //Medium kick
+            Move mk = new MediumKick(game, this);
+            mk.init(gc);
+            moveHandler.addMove(mk);
+            //Heavy kick
+            Move hk = new HeavyKick(game, this);
+            hk.init(gc);
+            moveHandler.addMove(hk);
+            
+            //Block
+            Move block = new Block(game, this);
+            block.init(gc);
+            moveHandler.addMove(block);
+            //Bunker
+            Move bunker = new Bunker(game, this);
+            bunker.init(gc);
+            moveHandler.addMove(bunker);
+            //Nato
+            Move nato = new Nato(game, this);
+            nato.init(gc);
+            moveHandler.addMove(nato);
         } catch (SlickException ex) {
             Logger.getLogger(Trudeau.class.getName()).log(Level.SEVERE, null, ex);
         }

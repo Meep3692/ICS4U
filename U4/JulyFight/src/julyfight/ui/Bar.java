@@ -45,9 +45,9 @@ public class Bar {
     }
     
     public void update(GameContainer gc, int delta){
-        bar1Size = health.getWidth() * (player1.getHealth() / 100);
-        bar2Size = health.getWidth() * (player2.getHealth() / 100);
-        bar2Location = gc.getWidth() - (health.getWidth() + 24);
+        bar1Size = (int) ((float)health.getWidth() * ((float)player1.getHealth() / 100f));
+        bar2Size = (int) ((float)health.getWidth() * ((float)player2.getHealth() / 100f));
+        bar2Location = (int) ((float)gc.getWidth() - ((float)health.getWidth() + 24f));
     }
     
     public void render(GameContainer gc, Graphics g){

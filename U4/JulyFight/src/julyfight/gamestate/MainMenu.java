@@ -8,7 +8,7 @@ package julyfight.gamestate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import julyfight.Config;
-import julyfight.Control;
+import julyfight.player.Control;
 import julyfight.JulyFight;
 import julyfight.player.Diefenbaker;
 import julyfight.player.Trudeau;

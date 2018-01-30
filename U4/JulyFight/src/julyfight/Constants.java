@@ -21,17 +21,7 @@ public class Constants {
     /**
      * Acceleration in pixels / second ^ 2
      */
-    public static final double PLAYER_ACC = 5000;
-    
-    /**
-     * Air acceleration
-     */
-    public static final double AIR_ACC = 3000;
-    
-    /**
-     * Maximum speed for players in pixels / second
-     */
-    public static final double MAX_SPEED = 10000;
+    public static final double PLAYER_ACC = 15000;
     
     /**
      * Jump speed
@@ -39,12 +29,12 @@ public class Constants {
     public static final double JUMP_SPEED = -1000;
     
     /**
-     * Amount of drag on players
+     * Time to animate basic moves
      */
-    public static final double DRAG = 500;
+    public static final double BASIC_MOVE_TIME = 0.2;
     
     /**
-     * Amount of friction experienced by the player
+     * Knockback multiplier
      */
-    public static final double FRICTION = 10;
+    public static final double KB_MULT = 100;
 }

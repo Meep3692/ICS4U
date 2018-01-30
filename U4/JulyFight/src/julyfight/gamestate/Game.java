@@ -11,16 +11,22 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import julyfight.Config;
-import julyfight.Control;
+import julyfight.GameObject;
+import julyfight.player.Control;
 import julyfight.JulyFight;
+import julyfight.physics.RectangleCollider;
+import julyfight.player.move.Move;
 import julyfight.player.Player;
 import julyfight.ui.Bar;
 import julyfight.ui.Effect;
+import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.UnicodeFont;
+import org.newdawn.slick.font.effects.ColorEffect;
 
 /**
  * Main game state
@@ -37,8 +43,14 @@ public class Game extends GameState {
     private EnumSet<Control> buttonsUp;
     
     private List<Effect> effects;//Effects
+    private List<GameObject> gameObjects;
+    private List<GameObject> gameObjectsKilled;
     private Bar healthBars;
     private Image background;//Background image
+    
+    public UnicodeFont hitFont;
+    
+    private GameContainer gc;
     
     public Game(Player player1, Player player2, JulyFight julyFight){
         super(julyFight);
@@ -51,10 +63,13 @@ public class Game extends GameState {
         buttonsUp = EnumSet.noneOf(Control.class);
         
         effects = new ArrayList<>();
+        gameObjects = new ArrayList<>();
+        gameObjectsKilled = new ArrayList<>();
     }
     
     @Override
     public void init(GameContainer gc) {
+        this.gc = gc;
         player1.init(gc, this, 1);//Init player 1
         player2.init(gc, this, 2);//Init player 1
         
@@ -66,6 +81,11 @@ public class Game extends GameState {
             Image barsbg = new Image("julyfight/assets/ui/bars/barsbg.png");
             Image bar = new Image("julyfight/assets/ui/bars/bar.png");
             healthBars = new Bar(bar, barsbg, player1, player2);
+            
+            hitFont = new UnicodeFont("julyfight/assets/ui/bars/DOS.ttf", 30, false, false);
+            hitFont.getEffects().add(new ColorEffect(java.awt.Color.YELLOW));
+            hitFont.addAsciiGlyphs();
+            hitFont.loadGlyphs();
         } catch (SlickException ex) {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -75,13 +95,27 @@ public class Game extends GameState {
     public void update(GameContainer gc, int delta) {
         player1.update(gc, delta);//Update players
         player2.update(gc, delta);
+        healthBars.update(gc, delta);//Update healthbars
+        
+        //GameObjects
+        for(GameObject object : gameObjects){
+            object.update(gc, delta);
+        }
+        
+        gameObjects.removeAll(gameObjectsKilled);
+        gameObjectsKilled.clear();
+        
+        //Effects
+        List<Effect> deadEffects = new ArrayList<>();//Dead effects
         for(Effect effect : effects){//Update effects
             effect.update(gc, delta);//Run update
             if(effect.isDead()){//Remove when dead
-                effects.remove(effect);
+                deadEffects.add(effect);//Add to dead effects
             }
         }
-        buttonsDown = EnumSet.noneOf(Control.class);
+        effects.removeAll(deadEffects);//Remove dead effects
+        
+        buttonsDown = EnumSet.noneOf(Control.class);//Clear buttons down and up before next update
         buttonsUp = EnumSet.noneOf(Control.class);
     }
 
@@ -90,10 +124,56 @@ public class Game extends GameState {
         background.draw();//Render background
         player1.render(gc, g);//Render players
         player2.render(gc, g);
+        //GameObjects
+        for(GameObject object : gameObjects){
+            object.render(gc, g);
+        }
+        
+        //Effects
         for(Effect effect : effects){//Render effects
             effect.render(gc, g);
         }
         healthBars.render(gc, g);
+    }
+    
+    public void addGameObject(GameObject object){
+        gameObjects.add(object);
+        object.init(gc);
+    }
+    
+    public void removeGameObject(GameObject object){
+        gameObjectsKilled.add(object);
+    }
+    
+    /**
+     * Add effect to world
+     * @param effect Effect to add
+     */
+    public void addEffect(Effect effect){
+        effects.add(effect);
+    }
+    
+    /**
+     * Hit an area of the screen
+     * @param where Hitbox for hit
+     * @param amount Amount of damage to do
+     * @param who Who is hitting
+     * @param stunTime Time to stun player for
+     */
+    public void hit(RectangleCollider where, int who, float amount, double stunTime){
+        if(who == 1){
+            if(player2.checkCollision(where)){
+                player2.hit(amount, stunTime);
+                Effect hitEffect = new Effect(hitFont, Float.toString(amount * (float)player2.defenseMod), (int)player2.getPosition().getX(), (int)where.getTop(), 1);
+                addEffect(hitEffect);
+            }
+        }else{
+            if(player1.checkCollision(where)){
+                player1.hit(amount, stunTime);
+                Effect hitEffect = new Effect(hitFont, Float.toString(amount * (float)player1.defenseMod), (int)player1.getPosition().getX(), (int)where.getTop(), 1);
+                addEffect(hitEffect);
+            }
+        }
     }
     
     /**
@@ -125,6 +205,10 @@ public class Game extends GameState {
     
     public int getBottom(){
         return 600;
+    }
+    
+    public int getRight(){
+        return 800;
     }
 
     @Override
