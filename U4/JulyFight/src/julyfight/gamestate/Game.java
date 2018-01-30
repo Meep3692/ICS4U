@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import julyfight.Config;
+import julyfight.GameObject;
 import julyfight.player.Control;
 import julyfight.JulyFight;
 import julyfight.physics.RectangleCollider;
@@ -42,10 +43,14 @@ public class Game extends GameState {
     private EnumSet<Control> buttonsUp;
     
     private List<Effect> effects;//Effects
+    private List<GameObject> gameObjects;
+    private List<GameObject> gameObjectsKilled;
     private Bar healthBars;
     private Image background;//Background image
     
-    private UnicodeFont hitFont;
+    public UnicodeFont hitFont;
+    
+    private GameContainer gc;
     
     public Game(Player player1, Player player2, JulyFight julyFight){
         super(julyFight);
@@ -58,10 +63,13 @@ public class Game extends GameState {
         buttonsUp = EnumSet.noneOf(Control.class);
         
         effects = new ArrayList<>();
+        gameObjects = new ArrayList<>();
+        gameObjectsKilled = new ArrayList<>();
     }
     
     @Override
     public void init(GameContainer gc) {
+        this.gc = gc;
         player1.init(gc, this, 1);//Init player 1
         player2.init(gc, this, 2);//Init player 1
         
@@ -88,6 +96,16 @@ public class Game extends GameState {
         player1.update(gc, delta);//Update players
         player2.update(gc, delta);
         healthBars.update(gc, delta);//Update healthbars
+        
+        //GameObjects
+        for(GameObject object : gameObjects){
+            object.update(gc, delta);
+        }
+        
+        gameObjects.removeAll(gameObjectsKilled);
+        gameObjectsKilled.clear();
+        
+        //Effects
         List<Effect> deadEffects = new ArrayList<>();//Dead effects
         for(Effect effect : effects){//Update effects
             effect.update(gc, delta);//Run update
@@ -96,6 +114,7 @@ public class Game extends GameState {
             }
         }
         effects.removeAll(deadEffects);//Remove dead effects
+        
         buttonsDown = EnumSet.noneOf(Control.class);//Clear buttons down and up before next update
         buttonsUp = EnumSet.noneOf(Control.class);
     }
@@ -105,12 +124,31 @@ public class Game extends GameState {
         background.draw();//Render background
         player1.render(gc, g);//Render players
         player2.render(gc, g);
+        //GameObjects
+        for(GameObject object : gameObjects){
+            object.render(gc, g);
+        }
+        
+        //Effects
         for(Effect effect : effects){//Render effects
             effect.render(gc, g);
         }
         healthBars.render(gc, g);
     }
     
+    public void addGameObject(GameObject object){
+        gameObjects.add(object);
+        object.init(gc);
+    }
+    
+    public void removeGameObject(GameObject object){
+        gameObjectsKilled.add(object);
+    }
+    
+    /**
+     * Add effect to world
+     * @param effect Effect to add
+     */
     public void addEffect(Effect effect){
         effects.add(effect);
     }
