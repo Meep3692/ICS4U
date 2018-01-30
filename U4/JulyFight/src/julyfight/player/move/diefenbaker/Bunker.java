@@ -32,7 +32,8 @@ public class Bunker extends Move {
 
     @Override
     public void execute() {
-        Effect bunkerEffect = new Effect(effect, (int)player.getPosition().getX(), (int)player.getPosition().getY() + 30, 150, 80, 1);
+        System.out.println("Deifenbunker effect");
+        Effect bunkerEffect = new Effect(effect, (int)player.getPosition().getX() - 75, (int)player.getPosition().getY() - 80, 150, 80, 1);
         game.addEffect(bunkerEffect);
     }
 

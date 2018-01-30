@@ -51,6 +51,28 @@ public class Diefenbaker extends Player {
             Move lp = new LightPunch(game, this);
             lp.init(gc);
             moveHandler.addMove(lp);
+            //Medium punch
+            Move mp = new MediumPunch(game, this);
+            mp.init(gc);
+            moveHandler.addMove(mp);
+            //Heavy punch
+            Move hp = new HeavyPunch(game, this);
+            hp.init(gc);
+            moveHandler.addMove(hp);
+            
+            //Light kick
+            Move lk = new LightKick(game, this);
+            lk.init(gc);
+            moveHandler.addMove(lk);
+            //Medium kick
+            Move mk = new MediumKick(game, this);
+            mk.init(gc);
+            moveHandler.addMove(mk);
+            //Heavy kick
+            Move hk = new HeavyKick(game, this);
+            hk.init(gc);
+            moveHandler.addMove(hk);
+            
             //Block
             Move block = new Block(game, this);
             block.init(gc);
@@ -59,6 +81,10 @@ public class Diefenbaker extends Player {
             Move bunker = new Bunker(game, this);
             bunker.init(gc);
             moveHandler.addMove(bunker);
+            //Nato
+            Move nato = new Nato(game, this);
+            nato.init(gc);
+            moveHandler.addMove(nato);
         } catch (SlickException ex) {
             Logger.getLogger(Trudeau.class.getName()).log(Level.SEVERE, null, ex);
         }

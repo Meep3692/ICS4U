@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package julyfight.player.move.diefenbaker;
+package julyfight.player.move.trudeau;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,46 +18,52 @@ import org.newdawn.slick.SlickException;
 
 /**
  *
- * @author Awoo
+ * @author Darian
  */
-public class Missle extends GameObject {
+public class CAF extends GameObject {
 
-    Image image;
-    private int x;
-    private int y;
-    
-    private Game game;
     private Player player;
+    private Game game;
+    private int x;
     
-    public Missle(int x, Game game, Player player){
+    private Image image;
+    private float timeAlive;
+    private float timeFromShot;
+    
+    public CAF(int x, Player player, Game game){
         this.x = x;
-        this.y = 0;
-        this.game = game;
         this.player = player;
+        this.game = game;
     }
     
     @Override
     public void init(GameContainer gc) {
         try {
-            image = new Image("julyfight/assets/diefenbaker/honestJohn.png");
+            image = new Image("julyfight/assets/trudeau/CAF.png");
+            timeAlive = 0;
+            timeFromShot = 0;
         } catch (SlickException ex) {
-            Logger.getLogger(Missle.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CAF.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     @Override
     public void update(GameContainer gc, int delta) {
-        y += delta / 2;
-        if(y > 600){
-            RectangleCollider hitbox = new RectangleCollider(x - 200, 400, y - 200, 400);
-            game.hit(hitbox, player.getPlayerNumber(), 15, 2);
+        timeAlive += (float)delta / 1000;
+        timeFromShot += (float)delta / 1000;
+        if(timeFromShot > 1){
+            RectangleCollider hitbox = new RectangleCollider(x, game.getBottom() - 196, 800, 1);
+            game.hit(hitbox, player.getPlayerNumber(), 5, 0.2);
+            timeFromShot = 0;
+        }
+        if(timeAlive > 3.1){
             game.removeGameObject(this);
         }
     }
 
     @Override
     public void render(GameContainer gc, Graphics g) {
-        image.draw(x - 128, y - 512);
+        image.draw(x - 128, game.getBottom() - 256);
     }
     
 }

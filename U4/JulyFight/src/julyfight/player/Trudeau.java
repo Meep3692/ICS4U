@@ -7,12 +7,9 @@ package julyfight.player;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import julyfight.Constants;
 import julyfight.gamestate.Game;
-import julyfight.physics.Vector2;
 import julyfight.player.move.Move;
-import julyfight.player.move.trudeau.Block;
-import julyfight.player.move.trudeau.LightPunch;
+import julyfight.player.move.trudeau.*;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -58,10 +55,37 @@ public class Trudeau extends Player {
             Move lp = new LightPunch(game, this);
             lp.init(gc);
             moveHandler.addMove(lp);
+            //Medium punch
+            Move mp = new MediumPunch(game, this);
+            mp.init(gc);
+            moveHandler.addMove(mp);
+            //Heavy punch
+            Move hp = new HeavyPunch(game, this);
+            hp.init(gc);
+            moveHandler.addMove(hp);
+            
+            //Light kick
+            Move lk = new LightKick(game, this);
+            lk.init(gc);
+            moveHandler.addMove(lk);
+            //Medium kick
+            Move mk = new MediumKick(game, this);
+            mk.init(gc);
+            moveHandler.addMove(mk);
+            //Heavy kick
+            Move hk = new HeavyKick(game, this);
+            hk.init(gc);
+            moveHandler.addMove(hk);
+            
             //Block
             Move block = new Block(game, this);
             block.init(gc);
             moveHandler.addMove(block);
+            
+            //National Defense
+            Move nd = new NationalDefense(game, this);
+            nd.init(gc);
+            moveHandler.addMove(nd);
         } catch (SlickException ex) {
             Logger.getLogger(Trudeau.class.getName()).log(Level.SEVERE, null, ex);
         }

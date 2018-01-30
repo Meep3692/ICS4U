@@ -14,7 +14,6 @@ import julyfight.player.Player;
 import julyfight.player.move.Move;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
@@ -22,27 +21,27 @@ import org.newdawn.slick.SlickException;
  *
  * @author Darian
  */
-public class LightPunch extends Move {
+public class MediumPunch extends Move {
     
-    public LightPunch(Game game, Player player) {
+    public MediumPunch(Game game, Player player) {
         super(game, player);
-        inputs = new Input[]{Input.LP};
+        inputs = new Input[]{Input.MP};
     }
 
     @Override
     public void execute() {
         RectangleCollider hitBox = new RectangleCollider(player.getPosition().getX(), player.getPosition().getY() - 154, -84 * player.facing, 23);//Generate hitbox
-        game.hit(hitBox, player.getPlayerNumber(), 1, 0.2);//Hit
-        player.renderer.setAnimation("LightPunch", 0.2);//Set animation
+        game.hit(hitBox, player.getPlayerNumber(), 2.5f, 0.2);//Hit
+        player.renderer.setAnimation("MediumPunch", 0.2);//Set animation
     }
     
     @Override
     public void init(GameContainer gc) {
         try {
-            Image punch = new Image("julyfight/assets/trudeau/punch.png");//Load image for animation
+            Image punch = new Image("julyfight/assets/trudeau/punch2.png");//Load image for animation
             Animation animation = new Animation();//Initialise animation
             animation.addFrame(punch, 1);//Add frame
-            player.renderer.addAnimation("LightPunch", animation);//Add to renderer
+            player.renderer.addAnimation("MediumPunch", animation);//Add to renderer
         } catch (SlickException ex) {
             Logger.getLogger(LightPunch.class.getName()).log(Level.SEVERE, null, ex);
         }

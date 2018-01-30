@@ -195,14 +195,12 @@ public abstract class Player {
             moveHandler.input(inputs);
         }else{
             inputTime += (double)delta / 1000;//Add time to delay between inputs
-            if(inputTime > 0.1){//If too much time between inputs
+            if(inputTime > 0.2){//If too much time between inputs
                 inputTime = 0;//Clear current moves
                 moveHandler.clear();
             }
         }
-        if(!inputsHeld.isEmpty()){
-            moveHandler.holdInput(inputsHeld);
-        }
+        moveHandler.holdInput(inputsHeld);
         
     }
     
