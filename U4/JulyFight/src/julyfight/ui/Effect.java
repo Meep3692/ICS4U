@@ -38,6 +38,8 @@ public class Effect {
         this.image = image;//Set image
         this.x = x;//Set values
         this.y = y;
+        this.width = width;
+        this.height = height;
         this.duration = duration;
         this.time = 0;
         this.image.setCenterOfRotation((float)width / 2, (float)height / 2);//Set centre of rotation to centre
