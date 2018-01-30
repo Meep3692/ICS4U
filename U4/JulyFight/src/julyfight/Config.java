@@ -70,7 +70,7 @@ public class Config {
             
             controls[Input.KEY_NUMPAD1] = Control.P2LK;
             controls[Input.KEY_NUMPAD2] = Control.P2MK;
-            controls[Input.KEY_NUMPAD1] = Control.P2HK;
+            controls[Input.KEY_NUMPAD3] = Control.P2HK;
             controls[Input.KEY_NUMPADENTER] = Control.P2B2;
             
             //Write new config file
